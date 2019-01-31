@@ -1,10 +1,12 @@
 package com.example.myrecylverviewapplication;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -49,12 +51,14 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
         TextView myTextView;
         TextView termStartDate;
         TextView termEndDate;
+        ImageButton btnDeleteTerm;
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvTermName);
             termStartDate = itemView.findViewById(R.id.tvTermStartDate);
             termEndDate = itemView.findViewById(R.id.tvTermEndDate);
+            btnDeleteTerm = itemView.findViewById(R.id.termDeleteButton);
             itemView.setOnClickListener(this);
         }
 

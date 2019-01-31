@@ -14,6 +14,9 @@ import android.widget.TextView;
 import java.sql.Date;
 import java.util.Calendar;
 
+import static com.example.myrecylverviewapplication.MainActivity.allTerms;
+import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
+
 public class AddTermActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY = "com.example.android.termlistsql.REPLY";
@@ -77,8 +80,7 @@ public class AddTermActivity extends AppCompatActivity {
         mStartDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month += 1;
-                String startDate = month + "/" + dayOfMonth + "/" + year;
+                String startDate = (month += 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayStartDate.setText(startDate);
                 startYear = year;
                 startMonth = month;
@@ -89,8 +91,7 @@ public class AddTermActivity extends AppCompatActivity {
         mEndDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month += 1;
-                String endDate = month + "/" + dayOfMonth + "/" + year;
+                String endDate = (month += 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayEndDate.setText(endDate);
                 endYear = year;
                 endMonth = month;
@@ -105,14 +106,22 @@ public class AddTermActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mEditTermView.getText())) {
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
+                    DBHelper myHelper = new DBHelper(AddTermActivity.this);
+                    myHelper.getWritableDatabase();
+
                     String term_name = mEditTermView.getText().toString();
 
-                    Date start_date = new Date(startYear, startMonth, startDay);
-                    Date end_date = new Date(endYear, endMonth, endDay);
-                    replyIntent.putExtra(EXTRA_REPLY, term_name);
-                    replyIntent.putExtra("start_date", start_date.getTime());
-                    replyIntent.putExtra("end_date", end_date.getTime());
-                    setResult(RESULT_OK, replyIntent);
+                    Date start_date = new Date(startYear - 1900, startMonth - 1, startDay);
+                    Date end_date = new Date(endYear - 1900, endMonth - 1, endDay);
+
+                    Term term = new Term(term_name, start_date, end_date);
+                    myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate());
+                    allTerms.add(term);
+                    termAdapter.notifyDataSetChanged();
+//                    replyIntent.putExtra(EXTRA_REPLY, term_name);
+//                    replyIntent.putExtra("start_date", start_date.getTime());
+//                    replyIntent.putExtra("end_date", end_date.getTime());
+//                    setResult(RESULT_OK, replyIntent);
                 } // end if
                 finish();
             } // end onClick
