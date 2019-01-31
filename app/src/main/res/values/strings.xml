@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">My RecylverView Application</string>
+    <string name="app_name">Term Tracker 1.0</string>
+    <string name="add_term">Add New Term</string>
 </resources>

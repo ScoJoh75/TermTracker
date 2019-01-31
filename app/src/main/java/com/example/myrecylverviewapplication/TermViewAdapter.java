@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHolder> {
 
     private List<Term> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(Context context, List<Term> data) {
+    TermViewAdapter(Context context, List<Term> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -34,6 +34,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         Term term = mData.get(position);
         holder.myTextView.setText(term.getTermName());
         holder.termStartDate.setText(term.getStartDate().toString());
+        holder.termEndDate.setText(term.getEndDate().toString());
     }
 
     // total number of rows
@@ -47,11 +48,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
         TextView termStartDate;
+        TextView termEndDate;
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvTermName);
             termStartDate = itemView.findViewById(R.id.tvTermStartDate);
+            termEndDate = itemView.findViewById(R.id.tvTermEndDate);
             itemView.setOnClickListener(this);
         }
 

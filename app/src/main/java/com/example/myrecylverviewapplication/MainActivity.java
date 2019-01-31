@@ -9,10 +9,10 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements TermViewAdapter.ItemClickListener {
 
     DBHelper myHelper;
-    MyRecyclerViewAdapter adapter;
+    TermViewAdapter adapter;
     List<Term> allTerms;
 
     @Override
@@ -25,15 +25,19 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         myHelper.createDataBase();
 
         // data to populate the RecyclerView with
-//        Term term = new Term("Term 3", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
-//        term.setId(myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate()));
+//        Term term = new Term("Term 1", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+//        myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate());
+//        term = new Term("Term 2", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+//        myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate());
+//        term = new Term("Term 3", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+//        myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate());
 
         allTerms = myHelper.getAllTerms();
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.allTerms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyRecyclerViewAdapter(this, allTerms);
+        adapter = new TermViewAdapter(this, allTerms);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
