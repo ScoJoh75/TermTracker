@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.List;
@@ -56,8 +55,4 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.I
         Intent intent = new Intent(this, AddTermActivity.class);
         startActivity(intent);
     }
-
-//    public void deleteTerm() {
-//        Toast.makeText(this, "You clicked to delete " + termAdapter.getItem(position), Toast.LENGTH_SHORT).show();
-//    }
 }

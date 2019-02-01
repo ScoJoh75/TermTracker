@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.Calendar;
@@ -18,8 +19,6 @@ import static com.example.myrecylverviewapplication.MainActivity.allTerms;
 import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
 
 public class AddTermActivity extends AppCompatActivity {
-
-    public static final String EXTRA_REPLY = "com.example.android.termlistsql.REPLY";
 
     private EditText mEditTermView;
     private TextView mDisplayStartDate;
@@ -43,7 +42,8 @@ public class AddTermActivity extends AppCompatActivity {
         mDisplayStartDate = findViewById(R.id.edit_start_date);
         mDisplayEndDate = findViewById(R.id.edit_end_date);
 
-        final Button button = findViewById(R.id.termInsertButton);
+        final Button insertButton = findViewById(R.id.termInsertButton);
+        final Button cancelButton = findViewById(R.id.cancelInsertButton);
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,12 +99,13 @@ public class AddTermActivity extends AppCompatActivity {
             } // end onDateSet
         }; // end mEndDateSetListener
 
-        button.setOnClickListener(new View.OnClickListener() {
+        insertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent replyIntent = new Intent();
+//
                 if(TextUtils.isEmpty(mEditTermView.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
+//                    setResult(RESULT_CANCELED, replyIntent);
+                    Toast.makeText(AddTermActivity.this, "Yo Yo! This can't be empty!!", Toast.LENGTH_SHORT).show();
                 } else {
                     DBHelper myHelper = new DBHelper(AddTermActivity.this);
                     myHelper.getWritableDatabase();
@@ -115,16 +116,19 @@ public class AddTermActivity extends AppCompatActivity {
                     Date end_date = new Date(endYear - 1900, endMonth - 1, endDay);
 
                     Term term = new Term(term_name, start_date, end_date);
-                    myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate());
+                    term.setId(myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate()));
                     allTerms.add(term);
                     termAdapter.notifyDataSetChanged();
-//                    replyIntent.putExtra(EXTRA_REPLY, term_name);
-//                    replyIntent.putExtra("start_date", start_date.getTime());
-//                    replyIntent.putExtra("end_date", end_date.getTime());
-//                    setResult(RESULT_OK, replyIntent);
+                    finish();
                 } // end if
-                finish();
             } // end onClick
         }); // end setOnClickListener
-    } // end onCreate
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
 }

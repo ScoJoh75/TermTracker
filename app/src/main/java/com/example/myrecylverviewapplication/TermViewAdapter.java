@@ -1,13 +1,14 @@
 package com.example.myrecylverviewapplication;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     private List<Term> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+
+    private static final String TAG = "TermViewAdapter";
 
     // data is passed into the constructor
     TermViewAdapter(Context context, List<Term> data) {
@@ -51,15 +54,22 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
         TextView myTextView;
         TextView termStartDate;
         TextView termEndDate;
-        ImageButton btnDeleteTerm;
+        ImageButton editButton;
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.tvTermName);
             termStartDate = itemView.findViewById(R.id.tvTermStartDate);
             termEndDate = itemView.findViewById(R.id.tvTermEndDate);
-            btnDeleteTerm = itemView.findViewById(R.id.termDeleteButton);
+            editButton = itemView.findViewById(R.id.termEditButton);
+
             itemView.setOnClickListener(this);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick: Edit Button Clicked for: " + getItem(getAdapterPosition()).getTermName() + " With ID of: " + getItem(getAdapterPosition()).getId());
+                }
+            });
         }
 
         @Override
