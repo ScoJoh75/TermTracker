@@ -85,10 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_end_date"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="409dp"
         android:text="Cancel New Term" />
 
     <Button
@@ -97,10 +96,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_end_date"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="409dp"
         android:text="@string/add_term" />
 
 </RelativeLayout>

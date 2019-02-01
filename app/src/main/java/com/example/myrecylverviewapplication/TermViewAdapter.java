@@ -1,6 +1,7 @@
 package com.example.myrecylverviewapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -63,11 +63,17 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
             termEndDate = itemView.findViewById(R.id.tvTermEndDate);
             editButton = itemView.findViewById(R.id.termEditButton);
 
+            final Context context = itemView.getContext();
+
             itemView.setOnClickListener(this);
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG, "onClick: Edit Button Clicked for: " + getItem(getAdapterPosition()).getTermName() + " With ID of: " + getItem(getAdapterPosition()).getId());
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(context, AddTermActivity.class);
+                    intent.putExtra("FullTerm", getItem(position));
+
+                    context.startActivity(intent);
                 }
             });
         }

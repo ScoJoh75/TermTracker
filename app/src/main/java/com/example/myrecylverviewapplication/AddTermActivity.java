@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,6 +21,7 @@ import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
 
 public class AddTermActivity extends AppCompatActivity {
 
+    private TextView mActivityTitle;
     private EditText mEditTermView;
     private TextView mDisplayStartDate;
     private DatePickerDialog.OnDateSetListener mStartDateSetListener;
@@ -33,14 +35,34 @@ public class AddTermActivity extends AppCompatActivity {
     int endMonth;
     int endDay;
 
+    private static final String TAG = "TermViewAdapter";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_term);
 
+        mActivityTitle = findViewById(R.id.termInfoTitle);
         mEditTermView = findViewById(R.id.edit_term_name);
         mDisplayStartDate = findViewById(R.id.edit_start_date);
         mDisplayEndDate = findViewById(R.id.edit_end_date);
+
+        Intent intent = getIntent();
+
+        if(intent.getExtras() != null) {
+            boolean modifying = true;
+            Term term = intent.getParcelableExtra("FullTerm");
+
+            mActivityTitle.setText("Update Term Information");
+            mEditTermView.setText(term.getTermName());
+            mDisplayStartDate.setText(term.getStartDate().toString());
+            mDisplayEndDate.setText(term.getEndDate().toString());
+
+            Log.d(TAG, "AddTerm: TermName being passed: " + term.getTermName());
+            Log.d(TAG, "AddTerm: ID being passed: " + term.getId());
+            Log.d(TAG, "AddTerm: StartDate being passed: " + term.getStartDate());
+            Log.d(TAG, "AddTerm: EndDate being passed: " + term.getEndDate());
+        }
 
         final Button insertButton = findViewById(R.id.termInsertButton);
         final Button cancelButton = findViewById(R.id.cancelInsertButton);
