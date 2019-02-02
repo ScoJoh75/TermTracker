@@ -26,8 +26,6 @@ public class AddTermActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mStartDateSetListener;
     private TextView mDisplayEndDate;
     private DatePickerDialog.OnDateSetListener mEndDateSetListener;
-    private Button mCancelInsertButton;
-    private Button mTermInsertButton;
 
     int startYear;
     int startMonth;

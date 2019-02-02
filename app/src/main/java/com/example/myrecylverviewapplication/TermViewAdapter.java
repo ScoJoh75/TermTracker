@@ -3,7 +3,6 @@ package com.example.myrecylverviewapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,6 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    private static final String TAG = "TermViewAdapter";
-
     // data is passed into the constructor
     TermViewAdapter(Context context, List<Term> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -31,7 +28,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyclerview_row, parent, false);
+        View view = mInflater.inflate(R.layout.term_view_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -39,7 +36,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Term term = mData.get(position);
-        holder.myTextView.setText(term.getTermName());
+        holder.termNameView.setText(term.getTermName());
         holder.termStartDate.setText(term.getStartDate().toString());
         holder.termEndDate.setText(term.getEndDate().toString());
     }
@@ -53,14 +50,14 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView termNameView;
         TextView termStartDate;
         TextView termEndDate;
         ImageButton editButton;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.tvTermName);
+            termNameView = itemView.findViewById(R.id.tvTermName);
             termStartDate = itemView.findViewById(R.id.tvTermStartDate);
             termEndDate = itemView.findViewById(R.id.tvTermEndDate);
             editButton = itemView.findViewById(R.id.termEditButton);

@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.I
     static TermViewAdapter termAdapter;
     static List<Term> allTerms;
 
-    private Button btnLaunchAddTerm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,14 +26,14 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.I
         myHelper.getWritableDatabase();
         myHelper.createDataBase();
 
-        btnLaunchAddTerm = findViewById(R.id.termAddButton);
-
+        Button btnLaunchAddTerm = findViewById(R.id.termAddButton);
         btnLaunchAddTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {launchAddTerm();}
         });
 
         allTerms = myHelper.getAllTerms();
+        myHelper.close();
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.allTerms);
@@ -43,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.I
         termAdapter = new TermViewAdapter(this, allTerms);
         termAdapter.setClickListener(this);
         recyclerView.setAdapter(termAdapter);
-
     }
 
     @Override
