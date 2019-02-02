@@ -39,7 +39,18 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("enddate", endDate.toString());
 
         return db.insert("Terms", null, values);
-    } // end addRecord
+    } // end addTerm
+
+    public void updateTerm(Long id, String termName, Date startDate, Date endDate) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("termname", termName);
+        values.put("startdate", startDate.toString());
+        values.put("enddate", endDate.toString());
+
+        db.update("Terms", values, "id = ?", new String[] { String.valueOf(id) });
+    } // end updateTerm
 
     // Deletes information from the database using a SQL statement! No Return Value!!
     public void deleteRecord(String sqlStatement) {

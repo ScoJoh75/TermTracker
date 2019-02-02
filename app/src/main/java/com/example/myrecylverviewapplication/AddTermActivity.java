@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,6 +26,8 @@ public class AddTermActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mStartDateSetListener;
     private TextView mDisplayEndDate;
     private DatePickerDialog.OnDateSetListener mEndDateSetListener;
+    private Button mCancelInsertButton;
+    private Button mTermInsertButton;
 
     int startYear;
     int startMonth;
@@ -35,7 +36,11 @@ public class AddTermActivity extends AppCompatActivity {
     int endMonth;
     int endDay;
 
-    private static final String TAG = "TermViewAdapter";
+    Term term;
+    Long id;
+    int listposition;
+
+    boolean modifying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,26 +51,33 @@ public class AddTermActivity extends AppCompatActivity {
         mEditTermView = findViewById(R.id.edit_term_name);
         mDisplayStartDate = findViewById(R.id.edit_start_date);
         mDisplayEndDate = findViewById(R.id.edit_end_date);
+        final Button insertButton = findViewById(R.id.termInsertButton);
+        final Button cancelButton = findViewById(R.id.cancelInsertButton);
 
         Intent intent = getIntent();
 
         if(intent.getExtras() != null) {
-            boolean modifying = true;
-            Term term = intent.getParcelableExtra("FullTerm");
+            modifying = true;
+            term = intent.getParcelableExtra("FullTerm");
+            id = term.getId();
+            listposition = intent.getIntExtra("listposition", -1);
 
-            mActivityTitle.setText("Update Term Information");
+            mActivityTitle.setText(getString(R.string.add_modify_title));
+            insertButton.setText("Update Term");
+            cancelButton.setText("Cancel Update");
             mEditTermView.setText(term.getTermName());
-            mDisplayStartDate.setText(term.getStartDate().toString());
-            mDisplayEndDate.setText(term.getEndDate().toString());
 
-            Log.d(TAG, "AddTerm: TermName being passed: " + term.getTermName());
-            Log.d(TAG, "AddTerm: ID being passed: " + term.getId());
-            Log.d(TAG, "AddTerm: StartDate being passed: " + term.getStartDate());
-            Log.d(TAG, "AddTerm: EndDate being passed: " + term.getEndDate());
+            Calendar startDate = Calendar.getInstance();
+            Calendar endDate = Calendar.getInstance();
+            startDate.setTime(term.getStartDate());
+            endDate.setTime(term.getEndDate());
+
+            String startString = (startDate.get(Calendar.MONTH) + 1) + "/" + startDate.get(Calendar.DAY_OF_MONTH) + "/" + startDate.get(Calendar.YEAR);
+            String endString = (endDate.get(Calendar.MONTH) + 1) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
+
+            mDisplayStartDate.setText(startString);
+            mDisplayEndDate.setText(endString);
         }
-
-        final Button insertButton = findViewById(R.id.termInsertButton);
-        final Button cancelButton = findViewById(R.id.cancelInsertButton);
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,23 +136,32 @@ public class AddTermActivity extends AppCompatActivity {
         insertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//
                 if(TextUtils.isEmpty(mEditTermView.getText())) {
-//                    setResult(RESULT_CANCELED, replyIntent);
                     Toast.makeText(AddTermActivity.this, "Yo Yo! This can't be empty!!", Toast.LENGTH_SHORT).show();
                 } else {
                     DBHelper myHelper = new DBHelper(AddTermActivity.this);
                     myHelper.getWritableDatabase();
 
                     String term_name = mEditTermView.getText().toString();
-
                     Date start_date = new Date(startYear - 1900, startMonth - 1, startDay);
                     Date end_date = new Date(endYear - 1900, endMonth - 1, endDay);
 
-                    Term term = new Term(term_name, start_date, end_date);
-                    term.setId(myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate()));
-                    allTerms.add(term);
-                    termAdapter.notifyDataSetChanged();
+                    if(modifying) {
+                        term.setId(id);
+                        term.setTermName(term_name);
+                        term.setStartDate(start_date);
+                        term.setEndDate(end_date);
+                        allTerms.set(listposition, term);
+                        myHelper.updateTerm(id, term_name, start_date, end_date);
+                        termAdapter.notifyDataSetChanged();
+                    } else {
+                        Term term = new Term(term_name, start_date, end_date);
+                        term.setId(myHelper.addTerm(term.getTermName(), term.getStartDate(), term.getEndDate()));
+                        allTerms.add(term);
+                        termAdapter.notifyDataSetChanged();
+                    } // end if
+
+                    myHelper.close();
                     finish();
                 } // end if
             } // end onClick

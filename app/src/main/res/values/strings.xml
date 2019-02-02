@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Term Tracker 1.0</string>
     <string name="add_term">Add New Term</string>
+    <string name="add_modify_title">Update Term Information</string>
 </resources>

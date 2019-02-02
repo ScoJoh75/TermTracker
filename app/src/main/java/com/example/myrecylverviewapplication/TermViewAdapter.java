@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static com.example.myrecylverviewapplication.MainActivity.allTerms;
+
 public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHolder> {
 
     private List<Term> mData;
@@ -70,7 +72,9 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
+                    int listposition = allTerms.indexOf(getItem(position));
                     Intent intent = new Intent(context, AddTermActivity.class);
+                    intent.putExtra("listposition", listposition);
                     intent.putExtra("FullTerm", getItem(position));
 
                     context.startActivity(intent);
