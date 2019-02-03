@@ -87,4 +87,3 @@ public class Term implements Parcelable {
         dest.writeLong(this.endDate.getTime());
     }
 } // end Term
-

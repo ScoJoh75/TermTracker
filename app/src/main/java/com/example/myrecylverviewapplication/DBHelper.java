@@ -100,7 +100,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     } // end getTermById
 
-
     public List<Term> getAllTerms() {
         List<Term> allTerms = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -120,6 +119,32 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return allTerms;
     } // end getAllTerms
+
+    public List<Course> getAllCourses(int termid) {
+        List<Course> allCourses = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM Courses WHERE termid = " + termid;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            while(cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                String courseTitle = cursor.getString(1);
+                Date startDate = Date.valueOf(cursor.getString(2));
+                Date endDate = Date.valueOf(cursor.getString(3));
+                String status = cursor.getString(4);
+                String mentorName = cursor.getString(5);
+                String mentorPhone = cursor.getString(6);
+                String mentorEmail = cursor.getString(7);
+                String notes = cursor.getString(8);
+                int termId = cursor.getInt(9);
+                Course course = new Course(id, courseTitle, startDate, endDate, status, mentorName, mentorPhone, mentorEmail, notes, termId);
+                allCourses.add(course);
+            } // end while
+        } // end if
+        cursor.close();
+        db.close();
+        return allCourses;
+    } // end getAllCourses
 
     /**
      * createDataBase is run on launch and checks to see if the database already exists. If it

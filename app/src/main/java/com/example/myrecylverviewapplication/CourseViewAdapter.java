@@ -11,16 +11,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.example.myrecylverviewapplication.MainActivity.allTerms;
+import static com.example.myrecylverviewapplication.TermDetailActivity.allCourses;
 
-public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHolder> {
+public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.ViewHolder> {
 
-    private List<Term> mData;
+    private List<Course> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    TermViewAdapter(Context context, List<Term> data) {
+    CourseViewAdapter(Context context, List<Course> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -28,17 +28,17 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.term_view_row, parent, false);
+        View view = mInflater.inflate(R.layout.course_view_row, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Term term = mData.get(position);
-        holder.termNameView.setText(term.getTermName());
-        holder.termStartDate.setText(term.getStartDate().toString());
-        holder.termEndDate.setText(term.getEndDate().toString());
+        Course course = mData.get(position);
+        holder.courseNameView.setText(course.getCourseTitle());
+        holder.courseStartDate.setText(course.getStartDate().toString());
+        holder.courseEndDate.setText(course.getEndDate().toString());
     }
 
     // total number of rows
@@ -50,17 +50,17 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView termNameView;
-        TextView termStartDate;
-        TextView termEndDate;
+        TextView courseNameView;
+        TextView courseStartDate;
+        TextView courseEndDate;
         ImageButton editButton;
 
         ViewHolder(View itemView) {
             super(itemView);
-            termNameView = itemView.findViewById(R.id.tvCourseName);
-            termStartDate = itemView.findViewById(R.id.tvCourseStartDate);
-            termEndDate = itemView.findViewById(R.id.tvTermEndDate);
-            editButton = itemView.findViewById(R.id.termEditButton);
+            courseNameView = itemView.findViewById(R.id.tvCourseName);
+            courseStartDate = itemView.findViewById(R.id.tvCourseStartDate);
+            courseEndDate = itemView.findViewById(R.id.tvCourseEndDate);
+            editButton = itemView.findViewById(R.id.courseEditButton);
 
             final Context context = itemView.getContext();
 
@@ -69,10 +69,10 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    int listposition = allTerms.indexOf(getItem(position));
-                    Intent intent = new Intent(context, AddTermActivity.class);
+                    int listposition = allCourses.indexOf(getItem(position));
+                    Intent intent = new Intent(context, AddCourseActivity.class);
                     intent.putExtra("listposition", listposition);
-                    intent.putExtra("FullTerm", getItem(position));
+                    intent.putExtra("FullCourse", getItem(position));
 
                     context.startActivity(intent);
                 }
@@ -86,7 +86,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     }
 
     // convenience method for getting data at click position
-    Term getItem(int id) {
+    Course getItem(int id) {
         return mData.get(id);
     }
 
