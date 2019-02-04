@@ -75,6 +75,24 @@ public class DBHelper extends SQLiteOpenHelper {
         // int rows = myHelper.removeRecord("tableName", "id = ?", whereArgs);
     } // end removeRecord
 
+    // Adds information to the SQL database using Content Values! Return values!
+    long addCourse(String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String courseNotes, Long termId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("termname", courseTitle);
+        values.put("startdate", startDate.toString());
+        values.put("enddate", endDate.toString());
+        values.put("status", status);
+        values.put("mentorname", mentorName);
+        values.put("mentorphone", mentorPhone);
+        values.put("mentoremail", mentorEmail);
+        values.put("notes", courseNotes);
+        values.put("termid", termId);
+
+        return db.insert("Terms", null, values);
+    } // end addTerm
+
     public long getIdByTermName(String termName) {
         long id = 0;
         SQLiteDatabase db = this.getReadableDatabase();

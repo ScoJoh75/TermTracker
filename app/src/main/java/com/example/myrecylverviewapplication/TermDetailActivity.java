@@ -22,6 +22,10 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
     static CourseViewAdapter courseAdapter;
     static List<Course> allCourses;
 
+    Intent intent = getIntent();
+    long termId = intent.getLongExtra("TermId", -1);
+    String termName = intent.getStringExtra("TermName");
+
     private static final String TAG = "TermDetail: ";
 
     @Override
@@ -31,10 +35,6 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
 
         myHelper = new DBHelper(TermDetailActivity.this);
         myHelper.getWritableDatabase();
-
-        Intent intent = getIntent();
-        final long termId = intent.getLongExtra("TermId", -1);
-        String termName = intent.getStringExtra("TermName");
 
         TextView tvTermName = findViewById(R.id.termName);
         tvTermName.setText(termName);
@@ -76,6 +76,7 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
 
     private void launchAddCourse() {
         Intent intent = new Intent(this, AddCourseActivity.class);
+        intent.putExtra("termid", termId);
         startActivity(intent);
     }
 }
