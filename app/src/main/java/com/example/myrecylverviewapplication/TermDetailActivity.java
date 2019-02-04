@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TermDetailActivity extends AppCompatActivity implements CourseViewAdapter.CourseClickListener{
@@ -19,10 +22,15 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
     static CourseViewAdapter courseAdapter;
     static List<Course> allCourses;
 
+    private static final String TAG = "TermDetail: ";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_detail);
+
+        myHelper = new DBHelper(TermDetailActivity.this);
+        myHelper.getWritableDatabase();
 
         Intent intent = getIntent();
         final long termId = intent.getLongExtra("TermId", -1);
@@ -35,8 +43,6 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
         deleteTerm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (allCourses.size() == 0) {
-                    myHelper = new DBHelper(TermDetailActivity.this);
-                    myHelper.getWritableDatabase();
                     myHelper.deleteTerm(termId);
                     myHelper.close();
                     finish();
@@ -53,7 +59,7 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
         });
 
         allCourses = myHelper.getAllCourses(termId);
-        myHelper.close();
+        //myHelper.close();
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.allTermCourses);

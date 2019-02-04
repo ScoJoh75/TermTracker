@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.myrecylverviewapplication.MainActivity.allTerms;
+import static com.example.myrecylverviewapplication.TermDetailActivity.allCourses;
 import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -127,14 +129,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return allTerms;
     } // end getAllTerms
 
+    private static final String TAG = "DBHelper: ";
+
     List<Course> getAllCourses(Long termid) {
+        Log.d(TAG, "getAllCourses: Entering");
         List<Course> allCourses = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM Courses WHERE termid = " + termid;
-        Cursor cursor = db.rawQuery(sql, null);
+        String term_id = Long.toString(termid);
+        String sql = "SELECT * FROM Courses WHERE termid = ?";
+        Log.d(TAG, "getAllCourses: sql = " + sql);
+        Log.d(TAG, "getAllCourses: termid = " + term_id);
+        Cursor cursor = db.rawQuery(sql, new String[] {term_id});
         if (cursor != null) {
             while(cursor.moveToNext()) {
-                Long id = cursor.getLong(0);
+                long id = cursor.getLong(0);
+                Log.d(TAG, "getAllCourses: id = " + id);
                 String courseTitle = cursor.getString(1);
                 Date startDate = Date.valueOf(cursor.getString(2));
                 Date endDate = Date.valueOf(cursor.getString(3));
@@ -143,7 +152,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String mentorPhone = cursor.getString(6);
                 String mentorEmail = cursor.getString(7);
                 String notes = cursor.getString(8);
-                int termId = cursor.getInt(9);
+                Long termId = cursor.getLong(9);
                 Course course = new Course(id, courseTitle, startDate, endDate, status, mentorName, mentorPhone, mentorEmail, notes, termId);
                 allCourses.add(course);
             } // end while

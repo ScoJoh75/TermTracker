@@ -3,4 +3,17 @@
     <string name="add_term">Add New Term</string>
     <string name="add_modify_title">Update Term Information</string>
     <string name="add_new_course">Add New Course</string>
+
+    <string name="status_prompt">Select Status</string>
+    <string-array name="course_status">
+        <item>Not Started</item>
+        <item>In Progress</item>
+        <item>Ready for Pre-Assessment</item>
+        <item>Ready for Assessment</item>
+        <item>Assessment Scheduled</item>
+        <item>Working on Performance Assessment</item>
+        <item>Performance Assessment Submitted</item>
+        <item>Course Completed</item>
+    </string-array>
+
 </resources>

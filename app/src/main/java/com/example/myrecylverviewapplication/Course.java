@@ -28,9 +28,9 @@ public class Course implements Parcelable {
     private String mentorPhone;
     private String mentorEmail;
     private String notes;
-    private int termId;
+    private Long termId;
 
-    Course(Long id, String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String notes, int termId) {
+    Course(Long id, String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String notes, Long termId) {
         this.id = id;
         this.courseTitle = courseTitle;
         this.startDate = startDate;
@@ -43,7 +43,7 @@ public class Course implements Parcelable {
         this.termId = termId;
     } // end Full Constructor
 
-    public Course(String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String notes, int termId) {
+    public Course(String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String notes, Long termId) {
         this.courseTitle = courseTitle;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -127,11 +127,11 @@ public class Course implements Parcelable {
         this.notes = notes;
     } // end setNotes
 
-    public int getTermId() {
+    public Long getTermId() {
         return termId;
     } // end getTermId
 
-    public void setTermId(int termId) {
+    public void setTermId(Long termId) {
         this.termId = termId;
     } // end setTermId
 
@@ -145,7 +145,7 @@ public class Course implements Parcelable {
         this.mentorPhone = in.readString();
         this.mentorEmail = in.readString();
         this.notes = in.readString();
-        this.termId = in.readInt();
+        this.termId = in.readLong();
     }
 
     @Override
@@ -164,6 +164,6 @@ public class Course implements Parcelable {
         dest.writeString(this.mentorPhone);
         dest.writeString(this.mentorEmail);
         dest.writeString(this.notes);
-        dest.writeInt(this.termId);
+        dest.writeLong(this.termId);
     }
 } // end Courses
