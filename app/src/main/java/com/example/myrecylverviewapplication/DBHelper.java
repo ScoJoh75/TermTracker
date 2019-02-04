@@ -10,12 +10,15 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.myrecylverviewapplication.MainActivity.allTerms;
+import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "TERMTRACKER.db";
     private static final int DATABASE_VERSION = 1;
 
-    public DBHelper(Context context) {
+    DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     } // end constructor
 
@@ -30,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
     } // end onUpgrade
 
     // Adds information to the SQL database using Content Values! Return values!
-    public long addTerm(String termName, Date startDate, Date endDate) {
+    long addTerm(String termName, Date startDate, Date endDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -41,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert("Terms", null, values);
     } // end addTerm
 
-    public void updateTerm(Long id, String termName, Date startDate, Date endDate) {
+    void updateTerm(Long id, String termName, Date startDate, Date endDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -52,14 +55,18 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update("Terms", values, "id = ?", new String[] { String.valueOf(id) });
     } // end updateTerm
 
-    // Deletes information from the database using a SQL statement! No Return Value!!
-    public void deleteRecord(String sqlStatement) {
-        this.getWritableDatabase().execSQL(sqlStatement);
-    } // end deleteRecord
-
-    public int removeRecord(String tableName, String whereClause, String[] whereArgs) {
+    void deleteTerm(long termId) {
+        int id = -1;
+        for(Term term : allTerms) {
+            if(term.getId() == termId) {
+                id = allTerms.indexOf(term);
+            } // end if
+        } // end for
+        allTerms.remove(id);
+        termAdapter.notifyDataSetChanged();
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(tableName, whereClause, whereArgs);
+        String[] args = {Long.toString(termId)};
+        db.delete("terms", "id = ?", args);
 
         // Example (MainActivity):
         // String[] whereArgs = {"12"};
@@ -100,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     } // end getTermById
 
-    public List<Term> getAllTerms() {
+    List<Term> getAllTerms() {
         List<Term> allTerms = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM Terms;";
@@ -120,14 +127,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return allTerms;
     } // end getAllTerms
 
-    public List<Course> getAllCourses(int termid) {
+    List<Course> getAllCourses(Long termid) {
         List<Course> allCourses = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM Courses WHERE termid = " + termid;
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             while(cursor.moveToNext()) {
-                int id = cursor.getInt(0);
+                Long id = cursor.getLong(0);
                 String courseTitle = cursor.getString(1);
                 Date startDate = Date.valueOf(cursor.getString(2));
                 Date endDate = Date.valueOf(cursor.getString(3));

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TermViewAdapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements TermViewAdapter.TermClickListener {
 
     DBHelper myHelper;
     static TermViewAdapter termAdapter;
@@ -44,8 +44,11 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.I
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You Clicked " + termAdapter.getItem(position).getTermName() + " on row number " + position, Toast.LENGTH_SHORT).show();
+    public void onTermClick(View view, int position) {
+        Intent intent = new Intent(this, TermDetailActivity.class);
+        intent.putExtra("TermId", termAdapter.getItem(position).getId());
+        intent.putExtra("TermName", termAdapter.getItem(position).getTermName());
+        this.startActivity(intent);
     }
 
     private void launchAddTerm() {

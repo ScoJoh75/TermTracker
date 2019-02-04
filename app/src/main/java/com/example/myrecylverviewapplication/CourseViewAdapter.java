@@ -17,7 +17,7 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
 
     private List<Course> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
+    private CourseClickListener mClickListener;
 
     // data is passed into the constructor
     CourseViewAdapter(Context context, List<Course> data) {
@@ -81,7 +81,7 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null) mClickListener.onCourseClick(view, getAdapterPosition());
         }
     }
 
@@ -91,12 +91,12 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
     }
 
     // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
+    void setClickListener(CourseClickListener courseClickListener) {
+        this.mClickListener = courseClickListener;
     }
 
     // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
+    public interface CourseClickListener {
+        void onCourseClick(View view, int position);
     }
 }

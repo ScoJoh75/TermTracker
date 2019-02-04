@@ -19,7 +19,7 @@ public class Course implements Parcelable {
         }
     };
 
-    private int id;
+    private Long id;
     private String courseTitle;
     private Date startDate;
     private Date endDate;
@@ -30,7 +30,7 @@ public class Course implements Parcelable {
     private String notes;
     private int termId;
 
-    Course(int id, String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String notes, int termId) {
+    Course(Long id, String courseTitle, Date startDate, Date endDate, String status, String mentorName, String mentorPhone, String mentorEmail, String notes, int termId) {
         this.id = id;
         this.courseTitle = courseTitle;
         this.startDate = startDate;
@@ -55,11 +55,11 @@ public class Course implements Parcelable {
         this.termId = termId;
     } // end Full Constructor
 
-    public int getId() {
+    public Long getId() {
         return id;
     } // end getId
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     } // end setId
 
@@ -136,7 +136,7 @@ public class Course implements Parcelable {
     } // end setTermId
 
     private Course(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.courseTitle = in.readString();
         this.startDate = new Date(in.readLong());
         this.endDate = new Date(in.readLong());
@@ -155,7 +155,7 @@ public class Course implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.courseTitle);
         dest.writeLong(this.startDate.getTime());
         dest.writeLong(this.endDate.getTime());

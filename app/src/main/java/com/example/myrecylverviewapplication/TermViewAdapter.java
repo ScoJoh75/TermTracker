@@ -17,7 +17,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
 
     private List<Term> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
+    private TermClickListener mClickListener;
 
     // data is passed into the constructor
     TermViewAdapter(Context context, List<Term> data) {
@@ -57,8 +57,8 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
 
         ViewHolder(View itemView) {
             super(itemView);
-            termNameView = itemView.findViewById(R.id.tvCourseName);
-            termStartDate = itemView.findViewById(R.id.tvCourseStartDate);
+            termNameView = itemView.findViewById(R.id.tvTermName);
+            termStartDate = itemView.findViewById(R.id.tvTermStartDate);
             termEndDate = itemView.findViewById(R.id.tvTermEndDate);
             editButton = itemView.findViewById(R.id.termEditButton);
 
@@ -81,7 +81,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null) mClickListener.onTermClick(view, getAdapterPosition());
         }
     }
 
@@ -91,12 +91,12 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     }
 
     // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
+    void setClickListener(TermClickListener termClickListener) {
+        this.mClickListener = termClickListener;
     }
 
     // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
+    public interface TermClickListener {
+        void onTermClick(View view, int position);
     }
 }
