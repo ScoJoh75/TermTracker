@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,7 +18,7 @@ import android.widget.Toast;
 import java.sql.Date;
 import java.util.Calendar;
 
-import static com.example.myrecylverviewapplication.TermDetailActivity.allCourses;
+import static com.example.myrecylverviewapplication.MainActivity.allCourses;
 import static com.example.myrecylverviewapplication.TermDetailActivity.courseAdapter;
 
 public class AddCourseActivity extends AppCompatActivity {
@@ -47,6 +49,8 @@ public class AddCourseActivity extends AppCompatActivity {
 
     boolean modifying = false;
 
+    public static final String TAG = "Addin:";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +71,35 @@ public class AddCourseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         termid = intent.getLongExtra("termid", -1);
-        //TODO Add intent gathering for Modify
+        Log.d(TAG, "onCreate: received termid = " + termid);
+
+        if(termid == -1) {
+            modifying = true;
+            course = intent.getParcelableExtra("FullCourse");
+            courseid = course.getId();
+            termid = course.getTermId();
+            listposition = intent.getIntExtra("listposition", -1);
+
+            mActivityTitle.setText("Update Course Information");
+            insertButton.setText("Update Course");
+            cancelButton.setText("Cancel Update");
+            mEditCourseTitle.setText(course.getCourseTitle());
+
+            Calendar startDate = Calendar.getInstance();
+            Calendar endDate = Calendar.getInstance();
+            startDate.setTime(course.getStartDate());
+            endDate.setTime(course.getEndDate());
+
+            String startString = (startDate.get(Calendar.MONTH) + 1) + "/" + startDate.get(Calendar.DAY_OF_MONTH) + "/" + startDate.get(Calendar.YEAR);
+            String endString = (endDate.get(Calendar.MONTH) + 1) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
+            mDisplayStartDate.setText(startString);
+            mDisplayEndDate.setText(endString);
+            mCourseStatus.setSelection(((ArrayAdapter<String>)mCourseStatus.getAdapter()).getPosition(course.getStatus()));
+            mMenterName.setText(course.getMentorName());
+            mMentorEmail.setText(course.getMentorEmail());
+            mMentorPhone.setText(course.getMentorPhone());
+            mCourseNotes.setText(course.getNotes());
+        }
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,27 +164,35 @@ public class AddCourseActivity extends AppCompatActivity {
                     DBHelper myHelper = new DBHelper(AddCourseActivity.this);
                     myHelper.getWritableDatabase();
 
-                    String course_title = mEditCourseTitle.getText().toString();
-                    Date start_date = new Date(startYear - 1900, startMonth - 1, startDay);
-                    Date end_date = new Date(endYear - 1900, endMonth - 1, endDay);
-                    String course_status = mCourseStatus.getSelectedItem().toString();
-                    String mentor_name = mMenterName.getText().toString();
-                    String mentor_email = mMentorEmail.getText().toString();
-                    String mentor_phone = mMentorPhone.getText().toString();
-                    String course_notes = mCourseNotes.getText().toString();
+                    String courseTitle = mEditCourseTitle.getText().toString();
+                    Date startDate = new Date(startYear - 1900, startMonth - 1, startDay);
+                    Date endDate = new Date(endYear - 1900, endMonth - 1, endDay);
+                    String courseStatus = mCourseStatus.getSelectedItem().toString();
+                    String mentorName = mMenterName.getText().toString();
+                    String mentorEmail = mMentorEmail.getText().toString();
+                    String mentorPhone = mMentorPhone.getText().toString();
+                    String courseNotes = mCourseNotes.getText().toString();
 
                     if(modifying) {
+                        Log.d(TAG, "onClick: Thinks we're modifying!");
                         course.setId(courseid);
-                        course.setCourseTitle(course_title);
-                        course.setStartDate(start_date);
-                        course.setEndDate(end_date);
+                        course.setCourseTitle(courseTitle);
+                        course.setStartDate(startDate);
+                        course.setEndDate(endDate);
+                        course.setStatus(courseStatus);
+                        course.setMentorName(mentorName);
+                        course.setMentorEmail(mentorEmail);
+                        course.setMentorPhone(mentorPhone);
+                        course.setNotes(courseNotes);
                         allCourses.set(listposition, course);
-                        //myHelper.updateCourse(courseid, course_title, start_date, end_date, course_status, mentor_name, mentor_phone, mentor_email, course_notes);
+                        myHelper.updateCourse(courseid, courseTitle, startDate, endDate, courseStatus, mentorName, mentorPhone, mentorEmail, courseNotes, termid);
                         courseAdapter.notifyDataSetChanged();
                         Toast.makeText(AddCourseActivity.this, "Modifying!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Course course = new Course(course_title, start_date, end_date, course_status, mentor_name, mentor_phone, mentor_email, course_notes, termid);
+                        Log.d(TAG, "onClick: We're NOT modifying");
+                        Course course = new Course(courseTitle, startDate, endDate, courseStatus, mentorName, mentorPhone, mentorEmail, courseNotes, termid);
                         course.setId(myHelper.addCourse(course.getCourseTitle(), course.getStartDate(), course.getEndDate(), course.getStatus(), course.getMentorName(), course.getMentorPhone(), course.getMentorEmail(), course.getNotes(), course.getTermId()));
+                        Log.d(TAG, "onClick: When inserting into database we got an id back of: " + course.getId());
                         allCourses.add(course);
                         courseAdapter.notifyDataSetChanged();
                     } // end if

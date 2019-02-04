@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.T
     DBHelper myHelper;
     static TermViewAdapter termAdapter;
     static List<Term> allTerms;
+    static List<Course> allCourses;
     public static final String TAG = "Main: ";
 
     @Override

@@ -16,15 +16,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.myrecylverviewapplication.MainActivity.allCourses;
+
 public class TermDetailActivity extends AppCompatActivity implements CourseViewAdapter.CourseClickListener{
 
     DBHelper myHelper;
     static CourseViewAdapter courseAdapter;
-    static List<Course> allCourses;
+    //static List<Course> allCourses;
 
-    Intent intent = getIntent();
-    long termId = intent.getLongExtra("TermId", -1);
-    String termName = intent.getStringExtra("TermName");
+    long termId;
 
     private static final String TAG = "TermDetail: ";
 
@@ -35,6 +35,10 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
 
         myHelper = new DBHelper(TermDetailActivity.this);
         myHelper.getWritableDatabase();
+
+        Intent intent = getIntent();
+        termId = intent.getLongExtra("TermId", -1);
+        String termName = intent.getStringExtra("TermName");
 
         TextView tvTermName = findViewById(R.id.termName);
         tvTermName.setText(termName);

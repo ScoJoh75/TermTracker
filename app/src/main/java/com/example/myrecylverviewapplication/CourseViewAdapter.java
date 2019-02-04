@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.example.myrecylverviewapplication.TermDetailActivity.allCourses;
+import static com.example.myrecylverviewapplication.MainActivity.allCourses;
 
 public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.ViewHolder> {
 

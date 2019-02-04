@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.myrecylverviewapplication.MainActivity.allTerms;
-import static com.example.myrecylverviewapplication.TermDetailActivity.allCourses;
+import static com.example.myrecylverviewapplication.MainActivity.allCourses;
 import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
+import static com.example.myrecylverviewapplication.TermDetailActivity.courseAdapter;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -80,7 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put("termname", courseTitle);
+        values.put("coursetitle", courseTitle);
         values.put("startdate", startDate.toString());
         values.put("enddate", endDate.toString());
         values.put("status", status);
@@ -90,42 +91,39 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("notes", courseNotes);
         values.put("termid", termId);
 
-        return db.insert("Terms", null, values);
-    } // end addTerm
+        return db.insert("Courses", null, values);
+    } // end addCourse
 
-    public long getIdByTermName(String termName) {
-        long id = 0;
-        SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT id, startdate, enddate FROM Terms WHERE termname = '" + termName + "'";
-        Cursor cursor = db.rawQuery(sql ,null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            id = cursor.getInt(0);
-            Date startDate = Date.valueOf(cursor.getString(1));
-            Date endDate = Date.valueOf(cursor.getString(2));
-            System.out.println("RETRIEVED DATA: " + id + " STARTDATE: " + startDate + " ENDDATE: " + endDate);
-        } // end if
-        db.close();
-        return id;
-    } // end getTermByName
+    void updateCourse(Long courseid, String courseTitle, Date startDate, Date endDate, String courseStatus, String mentorName, String mentorPhone, String mentorEmail, String courseNotes, Long termid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
 
-    public Term getTermById(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM Terms WHERE id = " + id;
-        Cursor cursor = db.rawQuery(sql, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            id = cursor.getLong(0);
-            String termName = cursor.getString(1);
-            Date startDate = Date.valueOf(cursor.getString(2));
-            Date endDate = Date.valueOf(cursor.getString(3));
-            Term term = new Term(id, termName, startDate, endDate);
-            db.close();
-            return term;
-        } // end if
-        db.close();
-        return null;
-    } // end getTermById
+        values.put("coursetitle", courseTitle);
+        values.put("startdate", startDate.toString());
+        values.put("enddate", endDate.toString());
+        values.put("status", courseStatus);
+        values.put("mentorname", mentorName);
+        values.put("mentorphone", mentorPhone);
+        values.put("mentoremail", mentorEmail);
+        values.put("notes", courseNotes);
+        values.put("termid", String.valueOf(termid));
+
+        db.update("Courses", values, "id = ?", new String[] { String.valueOf(courseid) });
+    } // end updateCourse
+
+    void deleteCourse(long courseId) {
+        int id = -1;
+        for(Course course : allCourses) {
+            if(course.getId() == courseId) {
+                id = allCourses.indexOf(course);
+            } // end if
+        } // end for
+        allCourses.remove(id);
+        courseAdapter.notifyDataSetChanged();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = {Long.toString(courseId)};
+        db.delete("courses", "id = ?", args);
+    } // end removeRecord
 
     List<Term> getAllTerms() {
         List<Term> allTerms = new ArrayList<>();
@@ -184,7 +182,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * createDataBase is run on launch and checks to see if the database already exists. If it
      * does not it will create the new tables and setup the database for working with the app.
      */
-    public void createDataBase() {
+    void createDataBase() {
         String termTable = "Terms";
         String courseTable = "Courses";
         String assessmentTable = "Assessments";
@@ -196,7 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
         this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS " + courseTable + "(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "coursetitle TEXT, " +
-                "startedate DATE, " +
+                "startdate DATE, " +
                 "enddate DATE, " +
                 "status TEXT, " +
                 "mentorname TEXT, " +
