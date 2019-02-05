@@ -30,7 +30,7 @@ public class AddCourseActivity extends AppCompatActivity {
     private TextView mDisplayEndDate;
     private DatePickerDialog.OnDateSetListener mEndDateSetListener;
     private Spinner mCourseStatus;
-    private EditText mMenterName;
+    private EditText mMentorName;
     private EditText mMentorEmail;
     private EditText mMentorPhone;
     private EditText mCourseNotes;
@@ -49,8 +49,6 @@ public class AddCourseActivity extends AppCompatActivity {
 
     boolean modifying = false;
 
-    public static final String TAG = "Addin:";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +59,7 @@ public class AddCourseActivity extends AppCompatActivity {
         mDisplayStartDate = findViewById(R.id.course_start_date);
         mDisplayEndDate = findViewById(R.id.course_end_date);
         mCourseStatus = findViewById(R.id.course_status);
-        mMenterName = findViewById(R.id.course_mentor_name);
+        mMentorName = findViewById(R.id.course_mentor_name);
         mMentorEmail = findViewById(R.id.course_mentor_email);
         mMentorPhone = findViewById(R.id.course_mentor_phone);
         mCourseNotes = findViewById(R.id.course_notes);
@@ -71,7 +69,6 @@ public class AddCourseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         termid = intent.getLongExtra("termid", -1);
-        Log.d(TAG, "onCreate: received termid = " + termid);
 
         if(termid == -1) {
             modifying = true;
@@ -95,7 +92,7 @@ public class AddCourseActivity extends AppCompatActivity {
             mDisplayStartDate.setText(startString);
             mDisplayEndDate.setText(endString);
             mCourseStatus.setSelection(((ArrayAdapter<String>)mCourseStatus.getAdapter()).getPosition(course.getStatus()));
-            mMenterName.setText(course.getMentorName());
+            mMentorName.setText(course.getMentorName());
             mMentorEmail.setText(course.getMentorEmail());
             mMentorPhone.setText(course.getMentorPhone());
             mCourseNotes.setText(course.getNotes());
@@ -168,13 +165,12 @@ public class AddCourseActivity extends AppCompatActivity {
                     Date startDate = new Date(startYear - 1900, startMonth - 1, startDay);
                     Date endDate = new Date(endYear - 1900, endMonth - 1, endDay);
                     String courseStatus = mCourseStatus.getSelectedItem().toString();
-                    String mentorName = mMenterName.getText().toString();
+                    String mentorName = mMentorName.getText().toString();
                     String mentorEmail = mMentorEmail.getText().toString();
                     String mentorPhone = mMentorPhone.getText().toString();
                     String courseNotes = mCourseNotes.getText().toString();
 
                     if(modifying) {
-                        Log.d(TAG, "onClick: Thinks we're modifying!");
                         course.setId(courseid);
                         course.setCourseTitle(courseTitle);
                         course.setStartDate(startDate);
@@ -189,10 +185,8 @@ public class AddCourseActivity extends AppCompatActivity {
                         courseAdapter.notifyDataSetChanged();
                         Toast.makeText(AddCourseActivity.this, "Modifying!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Log.d(TAG, "onClick: We're NOT modifying");
                         Course course = new Course(courseTitle, startDate, endDate, courseStatus, mentorName, mentorPhone, mentorEmail, courseNotes, termid);
                         course.setId(myHelper.addCourse(course.getCourseTitle(), course.getStartDate(), course.getEndDate(), course.getStatus(), course.getMentorName(), course.getMentorPhone(), course.getMentorEmail(), course.getNotes(), course.getTermId()));
-                        Log.d(TAG, "onClick: When inserting into database we got an id back of: " + course.getId());
                         allCourses.add(course);
                         courseAdapter.notifyDataSetChanged();
                     } // end if

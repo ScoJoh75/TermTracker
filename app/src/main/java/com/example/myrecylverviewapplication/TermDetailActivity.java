@@ -5,16 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.myrecylverviewapplication.MainActivity.allCourses;
 
@@ -22,11 +17,8 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
 
     DBHelper myHelper;
     static CourseViewAdapter courseAdapter;
-    //static List<Course> allCourses;
 
     long termId;
-
-    private static final String TAG = "TermDetail: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +67,9 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
 
     @Override
     public void onCourseClick(View view, int position) {
-        Toast.makeText(this, "You Clicked " + courseAdapter.getItem(position).getCourseTitle() + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CourseDetailActivity.class);
+        intent.putExtra("FullCourse", courseAdapter.getItem(position));
+        this.startActivity(intent);
     }
 
     private void launchAddCourse() {

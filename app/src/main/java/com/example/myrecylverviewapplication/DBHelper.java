@@ -207,6 +207,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "assessmentname TEXT, " +
                 "assessmenttype TEXT, " +
+                "goaldate DATE, " +
                 "courseid INTEGER, " +
                 "FOREIGN KEY (courseid) REFERENCES Courses(id))");
     } // end createTable
