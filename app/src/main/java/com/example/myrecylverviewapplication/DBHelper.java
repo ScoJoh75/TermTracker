@@ -5,12 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.myrecylverviewapplication.CourseDetailActivity.assessmentAdapter;
+import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
 import static com.example.myrecylverviewapplication.MainActivity.allTerms;
 import static com.example.myrecylverviewapplication.MainActivity.allCourses;
 import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
@@ -69,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
         termAdapter.notifyDataSetChanged();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = {Long.toString(termId)};
-        db.delete("terms", "id = ?", args);
+        db.delete("Terms", "id = ?", args);
 
         // Example (MainActivity):
         // String[] whereArgs = {"12"};
@@ -122,7 +123,47 @@ public class DBHelper extends SQLiteOpenHelper {
         courseAdapter.notifyDataSetChanged();
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = {Long.toString(courseId)};
-        db.delete("courses", "id = ?", args);
+        db.delete("Courses", "id = ?", args);
+    } // end removeRecord
+
+    // Adds information to the SQL database using Content Values! Return values!
+    long addAssessment(String assessmentName, String assessmentType, Date goalDate, Long courseId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("assessmentname", assessmentName);
+        values.put("assessmenttype", assessmentType);
+        values.put("goaldate", goalDate.toString());
+        values.put("courseid", courseId);
+
+        return db.insert("Assessments", null, values);
+    } // end addTerm
+
+
+    void updateAssessment(Long id, String assessmentName, String assessmentType, Date goalDate, Long courseId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("assessmentname", assessmentName);
+        values.put("assessmenttype", assessmentType);
+        values.put("goaldate", goalDate.toString());
+        values.put("courseid", courseId);
+
+        db.update("Assessments", values, "id = ?", new String[] { String.valueOf(id) });
+    } // end updateTerm
+
+    void deleteAssessment(long assessmentId) {
+        int id = -1;
+        for(Assessment assessment : allAssessments) {
+            if(assessment.getId() == assessmentId) {
+                id = allAssessments.indexOf(assessment);
+            } // end if
+        } // end for
+        allAssessments.remove(id);
+        assessmentAdapter.notifyDataSetChanged();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = {Long.toString(assessmentId)};
+        db.delete("Assessments", "id = ?", args);
     } // end removeRecord
 
     List<Term> getAllTerms() {
@@ -145,21 +186,16 @@ public class DBHelper extends SQLiteOpenHelper {
         return allTerms;
     } // end getAllTerms
 
-    private static final String TAG = "DBHelper: ";
 
     List<Course> getAllCourses(Long termid) {
-        Log.d(TAG, "getAllCourses: Entering");
         List<Course> allCourses = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String term_id = Long.toString(termid);
         String sql = "SELECT * FROM Courses WHERE termid = ?";
-        Log.d(TAG, "getAllCourses: sql = " + sql);
-        Log.d(TAG, "getAllCourses: termid = " + term_id);
         Cursor cursor = db.rawQuery(sql, new String[] {term_id});
         if (cursor != null) {
             while(cursor.moveToNext()) {
                 long id = cursor.getLong(0);
-                Log.d(TAG, "getAllCourses: id = " + id);
                 String courseTitle = cursor.getString(1);
                 Date startDate = Date.valueOf(cursor.getString(2));
                 Date endDate = Date.valueOf(cursor.getString(3));
@@ -177,6 +213,28 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return allCourses;
     } // end getAllCourses
+
+    List<Assessment> getAllAssessments(Long courseid) {
+        List<Assessment> allAssessments = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String course_id = Long.toString(courseid);
+        String sql = "SELECT * FROM Assessments WHERE courseid = ?";
+        Cursor cursor = db.rawQuery(sql, new String[] {course_id});
+        if (cursor != null) {
+            while(cursor.moveToNext()) {
+                long id = cursor.getLong(0);
+                String assessmentName = cursor.getString(1);
+                String assessmentType = cursor.getString(2);
+                Date goalDate = Date.valueOf(cursor.getString(3));
+                long courseId = cursor.getLong(4);
+                Assessment assessment = new Assessment(id, assessmentName, assessmentType, goalDate, courseId);
+                allAssessments.add(assessment);
+            } // end while
+        } // end if
+        cursor.close();
+        db.close();
+        return allAssessments;
+    } // end getAllAssessments
 
     /**
      * createDataBase is run on launch and checks to see if the database already exists. If it

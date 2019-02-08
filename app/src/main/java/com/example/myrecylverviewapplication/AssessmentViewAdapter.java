@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static com.example.myrecylverviewapplication.CourseDetailActivity.assessmentAdapter;
 import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
 
 public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAdapter.ViewHolder> {
@@ -52,31 +53,32 @@ public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAd
         TextView assessmentNameView;
         TextView assessmentGoalDate;
         TextView assessmentTypeView;
-        ImageButton editButton;
+        ImageButton deleteButton;
 
         ViewHolder(View itemView) {
             super(itemView);
             assessmentNameView = itemView.findViewById(R.id.assessment_name);
             assessmentGoalDate = itemView.findViewById(R.id.assessment_goal_date);
             assessmentTypeView = itemView.findViewById(R.id.assessment_type);
-            editButton = itemView.findViewById(R.id.edit_button);
+            deleteButton = itemView.findViewById(R.id.delete_button);
 
             final Context context = itemView.getContext();
 
             itemView.setOnClickListener(this);
-            editButton.setOnClickListener(new View.OnClickListener() {
+            deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    DBHelper myhelper = new DBHelper(context);
+                    myhelper.getWritableDatabase();
+
                     int position = getAdapterPosition();
                     int listposition = allAssessments.indexOf(getItem(position));
-                    Intent intent = new Intent(context, AddAssessmentActivity.class);
-                    intent.putExtra("listposition", listposition);
-                    intent.putExtra("FullAssessment", getItem(position));
-
-                    context.startActivity(intent);
-                }
-            });
-        }
+                    myhelper.deleteAssessment(getItem(position).getId());
+                    allAssessments.remove(getItem(position));
+                    assessmentAdapter.notifyDataSetChanged();
+                } // end onClick
+            }); // end setOnClickListener
+        } // end ViewHolder
 
         @Override
         public void onClick(View view) {

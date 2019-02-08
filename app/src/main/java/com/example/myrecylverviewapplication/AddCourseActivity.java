@@ -96,7 +96,7 @@ public class AddCourseActivity extends AppCompatActivity {
             mMentorEmail.setText(course.getMentorEmail());
             mMentorPhone.setText(course.getMentorPhone());
             mCourseNotes.setText(course.getNotes());
-        }
+        } // end modifying if
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +183,6 @@ public class AddCourseActivity extends AppCompatActivity {
                         allCourses.set(listposition, course);
                         myHelper.updateCourse(courseid, courseTitle, startDate, endDate, courseStatus, mentorName, mentorPhone, mentorEmail, courseNotes, termid);
                         courseAdapter.notifyDataSetChanged();
-                        Toast.makeText(AddCourseActivity.this, "Modifying!", Toast.LENGTH_SHORT).show();
                     } else {
                         Course course = new Course(courseTitle, startDate, endDate, courseStatus, mentorName, mentorPhone, mentorEmail, courseNotes, termid);
                         course.setId(myHelper.addCourse(course.getCourseTitle(), course.getStartDate(), course.getEndDate(), course.getStatus(), course.getMentorName(), course.getMentorPhone(), course.getMentorEmail(), course.getNotes(), course.getTermId()));
@@ -201,7 +200,7 @@ public class AddCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
-    }
-}
+            } // end onClick
+        }); // end setOnClickListener
+    } // end onCreate
+} // end AddCourseActivity
