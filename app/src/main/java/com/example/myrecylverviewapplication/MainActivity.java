@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements TermViewAdapter.T
     static TermViewAdapter termAdapter;
     static List<Term> allTerms;
     static List<Course> allCourses;
+    static List<Assessment> allAssessments;
     public static final String TAG = "Main: ";
 
     @Override

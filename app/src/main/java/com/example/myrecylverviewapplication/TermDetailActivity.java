@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import static com.example.myrecylverviewapplication.MainActivity.allCourses;
 
-public class TermDetailActivity extends AppCompatActivity implements CourseViewAdapter.CourseClickListener{
+public class TermDetailActivity extends AppCompatActivity implements CourseViewAdapter.CourseClickListener {
 
     DBHelper myHelper;
     static CourseViewAdapter courseAdapter;

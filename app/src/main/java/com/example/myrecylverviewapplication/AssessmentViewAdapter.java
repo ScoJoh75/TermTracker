@@ -11,16 +11,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.example.myrecylverviewapplication.MainActivity.allCourses;
+import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
 
-public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.ViewHolder> {
+public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAdapter.ViewHolder> {
 
-    private List<Course> mData;
+    private List<Assessment> mData;
     private LayoutInflater mInflater;
-    private CourseClickListener mClickListener;
+    private AssessmentClickListener mClickListener;
 
     // data is passed into the constructor
-    CourseViewAdapter(Context context, List<Course> data) {
+    AssessmentViewAdapter(Context context, List<Assessment> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -28,17 +28,17 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.course_view_row, parent, false);
+        View view = mInflater.inflate(R.layout.assessment_view_row, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Course course = mData.get(position);
-        holder.courseNameView.setText(course.getCourseTitle());
-        holder.courseStartDate.setText(course.getStartDate().toString());
-        holder.courseEndDate.setText(course.getEndDate().toString());
+        Assessment assessment = mData.get(position);
+        holder.assessmentNameView.setText(assessment.getAssessmentName());
+        holder.assessmentGoalDate.setText(assessment.getGoalDate().toString());
+        holder.assessmentTypeView.setText(assessment.getAssessmentType());
     }
 
     // total number of rows
@@ -49,17 +49,17 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView courseNameView;
-        TextView courseStartDate;
-        TextView courseEndDate;
+        TextView assessmentNameView;
+        TextView assessmentGoalDate;
+        TextView assessmentTypeView;
         ImageButton editButton;
 
         ViewHolder(View itemView) {
             super(itemView);
-            courseNameView = itemView.findViewById(R.id.tvCourseName);
-            courseStartDate = itemView.findViewById(R.id.tvCourseStartDate);
-            courseEndDate = itemView.findViewById(R.id.tvCourseEndDate);
-            editButton = itemView.findViewById(R.id.courseEditButton);
+            assessmentNameView = itemView.findViewById(R.id.assessment_name);
+            assessmentGoalDate = itemView.findViewById(R.id.assessment_goal_date);
+            assessmentTypeView = itemView.findViewById(R.id.assessment_type);
+            editButton = itemView.findViewById(R.id.edit_button);
 
             final Context context = itemView.getContext();
 
@@ -68,10 +68,10 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    int listposition = allCourses.indexOf(getItem(position));
-                    Intent intent = new Intent(context, AddCourseActivity.class);
+                    int listposition = allAssessments.indexOf(getItem(position));
+                    Intent intent = new Intent(context, AddAssessmentActivity.class);
                     intent.putExtra("listposition", listposition);
-                    intent.putExtra("FullCourse", getItem(position));
+                    intent.putExtra("FullAssessment", getItem(position));
 
                     context.startActivity(intent);
                 }
@@ -80,22 +80,22 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Vi
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onCourseClick(view, getAdapterPosition());
+            if (mClickListener != null) mClickListener.onAssessmentClick(view, getAdapterPosition());
         }
     }
 
     // convenience method for getting data at click position
-    Course getItem(int id) {
+    Assessment getItem(int id) {
         return mData.get(id);
     }
 
     // allows clicks events to be caught
-    void setClickListener(CourseClickListener courseClickListener) {
-        this.mClickListener = courseClickListener;
+    void setClickListener(AssessmentClickListener assessmentClickListener) {
+        this.mClickListener = assessmentClickListener;
     }
 
     // parent activity will implement this method to respond to click events
-    public interface CourseClickListener {
-        void onCourseClick(View view, int position);
+    public interface AssessmentClickListener {
+        void onAssessmentClick(View view, int position);
     }
 }
