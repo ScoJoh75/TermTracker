@@ -1,6 +1,9 @@
 package com.example.myrecylverviewapplication;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -118,7 +121,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
                     String assessmentName = mAssessmentName.getText().toString();
                     Date goalDate = new Date(goalYear - 1900, goalMonth - 1, goalDay);
                     String assessmentType = mAssessmentType.getSelectedItem().toString();
-                    Boolean assessmentAlert = mAssessmentAlert.isActivated();
+                    Boolean assessmentAlert = mAssessmentAlert.isChecked();
 
                     if(modifying) {
                         assessment.setId(assessmentId);
@@ -133,6 +136,18 @@ public class AddAssessmentActivity extends AppCompatActivity {
                         assessment.setId(myHelper.addAssessment(assessment.getAssessmentName(), assessment.getAssessmentType(), assessment.getGoalDate(), assessment.getCourseId()));
                         allAssessments.add(assessment);
                         assessmentAdapter.notifyDataSetChanged();
+                    } // end if
+
+                    if(assessmentAlert) {
+                        Toast.makeText(AddAssessmentActivity.this, "You're Saving an Alert!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(AddAssessmentActivity.this, MyReceiver.class);
+                        intent.putExtra("ID", assessment.getId().toString());
+                        intent.putExtra("Name", assessment.getAssessmentName());
+                        PendingIntent sender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, intent, 0);
+                        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000, sender);
+                    } else {
+                        Toast.makeText(AddAssessmentActivity.this, "You're Disabling an Alert", Toast.LENGTH_SHORT).show();
                     } // end if
 
                     myHelper.close();

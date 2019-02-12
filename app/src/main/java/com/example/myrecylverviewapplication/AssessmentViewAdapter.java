@@ -1,7 +1,6 @@
 package com.example.myrecylverviewapplication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
-
-import static com.example.myrecylverviewapplication.CourseDetailActivity.assessmentAdapter;
-import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
 
 public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAdapter.ViewHolder> {
 
@@ -72,10 +68,7 @@ public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAd
                     myhelper.getWritableDatabase();
 
                     int position = getAdapterPosition();
-                    int listposition = allAssessments.indexOf(getItem(position));
                     myhelper.deleteAssessment(getItem(position).getId());
-                    allAssessments.remove(getItem(position));
-                    assessmentAdapter.notifyDataSetChanged();
                 } // end onClick
             }); // end setOnClickListener
         } // end ViewHolder
