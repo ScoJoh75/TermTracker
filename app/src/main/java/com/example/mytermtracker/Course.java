@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.os.Parcel;
 import android.os.Parcelable;

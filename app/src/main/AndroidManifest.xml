@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myrecylverviewapplication">
+    package="com.example.mytermtracker">
 
     <application
         android:allowBackup="true"
@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <receiver
-            android:name=".MyReceiver"
+            android:name="com.example.mytermtracker.MyReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
 
-        <activity android:name=".AddAssessmentActivity" />
-        <activity android:name=".CourseDetailActivity" />
-        <activity android:name=".AddCourseActivity" />
-        <activity android:name=".TermDetailActivity" />
-        <activity android:name=".AddTermActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.mytermtracker.AddAssessmentActivity" />
+        <activity android:name="com.example.mytermtracker.CourseDetailActivity" />
+        <activity android:name="com.example.mytermtracker.AddCourseActivity" />
+        <activity android:name="com.example.mytermtracker.TermDetailActivity" />
+        <activity android:name="com.example.mytermtracker.AddTermActivity" />
+        <activity android:name="com.example.mytermtracker.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

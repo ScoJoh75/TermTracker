@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

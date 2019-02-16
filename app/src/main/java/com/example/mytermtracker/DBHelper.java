@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,12 +10,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.myrecylverviewapplication.CourseDetailActivity.assessmentAdapter;
-import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
-import static com.example.myrecylverviewapplication.MainActivity.allTerms;
-import static com.example.myrecylverviewapplication.MainActivity.allCourses;
-import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
-import static com.example.myrecylverviewapplication.TermDetailActivity.courseAdapter;
+import static com.example.mytermtracker.CourseDetailActivity.assessmentAdapter;
+import static com.example.mytermtracker.MainActivity.allAssessments;
+import static com.example.mytermtracker.MainActivity.allTerms;
+import static com.example.mytermtracker.MainActivity.allCourses;
+import static com.example.mytermtracker.MainActivity.termAdapter;
+import static com.example.mytermtracker.TermDetailActivity.courseAdapter;
 
 public class DBHelper extends SQLiteOpenHelper {
 

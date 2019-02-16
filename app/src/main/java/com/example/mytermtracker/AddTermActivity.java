@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -15,8 +15,8 @@ import android.widget.Toast;
 import java.sql.Date;
 import java.util.Calendar;
 
-import static com.example.myrecylverviewapplication.MainActivity.allTerms;
-import static com.example.myrecylverviewapplication.MainActivity.termAdapter;
+import static com.example.mytermtracker.MainActivity.allTerms;
+import static com.example.mytermtracker.MainActivity.termAdapter;
 
 public class AddTermActivity extends AppCompatActivity {
 

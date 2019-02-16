@@ -1,11 +1,10 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,8 +17,8 @@ import android.widget.Toast;
 import java.sql.Date;
 import java.util.Calendar;
 
-import static com.example.myrecylverviewapplication.MainActivity.allCourses;
-import static com.example.myrecylverviewapplication.TermDetailActivity.courseAdapter;
+import static com.example.mytermtracker.MainActivity.allCourses;
+import static com.example.mytermtracker.TermDetailActivity.courseAdapter;
 
 public class AddCourseActivity extends AppCompatActivity {
 

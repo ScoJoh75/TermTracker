@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
+import static com.example.mytermtracker.MainActivity.allAssessments;
 
 public class CourseDetailActivity extends AppCompatActivity implements AssessmentViewAdapter.AssessmentClickListener {
 

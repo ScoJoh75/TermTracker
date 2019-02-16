@@ -1,10 +1,11 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,12 +22,11 @@ import android.widget.Toast;
 import java.sql.Date;
 import java.util.Calendar;
 
-import static com.example.myrecylverviewapplication.CourseDetailActivity.assessmentAdapter;
-import static com.example.myrecylverviewapplication.MainActivity.allAssessments;
+import static com.example.mytermtracker.CourseDetailActivity.assessmentAdapter;
+import static com.example.mytermtracker.MainActivity.allAssessments;
 
 public class AddAssessmentActivity extends AppCompatActivity {
 
-    private TextView mActivityTitle;
     private EditText mAssessmentName;
     private Spinner mAssessmentType;
     private TextView mDisplayGoalDate;
@@ -43,13 +43,16 @@ public class AddAssessmentActivity extends AppCompatActivity {
     int listposition;
 
     boolean modifying = false;
+    PendingIntent oldSender;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assessment);
 
-        mActivityTitle = findViewById(R.id.assessment_activity_title);
+        TextView mActivityTitle = findViewById(R.id.assessment_activity_title);
         mAssessmentName = findViewById(R.id.assessment_name);
         mAssessmentType = findViewById(R.id.assessment_type);
         mDisplayGoalDate = findViewById(R.id.assessment_goal_date);
@@ -79,6 +82,19 @@ public class AddAssessmentActivity extends AppCompatActivity {
             String goalString = (goalDate.get(Calendar.MONTH) + 1) + "/" + goalDate.get(Calendar.DAY_OF_MONTH) + "/" + goalDate.get(Calendar.YEAR);
             mDisplayGoalDate.setText(goalString);
             mAssessmentType.setSelection(((ArrayAdapter<String>)mAssessmentType.getAdapter()).getPosition(assessment.getAssessmentType()));
+
+            Intent oldIntent = new Intent(AddAssessmentActivity.this, MyReceiver.class);
+            oldIntent.putExtra("Channel", "Assessment");
+            oldIntent.putExtra("ID", assessment.getId().toString());
+            oldIntent.putExtra("Name", assessment.getAssessmentName());
+            PendingIntent oldsender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, oldIntent, 0);
+
+            String assessmentIdPrefs = assessmentId.toString();
+            sharedPreferences = getSharedPreferences(assessmentIdPrefs, Context.MODE_PRIVATE);
+
+
+            // TODO determine status of existing alerts and set appropriately
+            String choice;
             mAssessmentAlert.setChecked(true);
         } // end modifying if
 
@@ -121,7 +137,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
                     String assessmentName = mAssessmentName.getText().toString();
                     Date goalDate = new Date(goalYear - 1900, goalMonth - 1, goalDay);
                     String assessmentType = mAssessmentType.getSelectedItem().toString();
-                    Boolean assessmentAlert = mAssessmentAlert.isChecked();
+                    boolean assessmentAlert = mAssessmentAlert.isChecked();
 
                     if(modifying) {
                         assessment.setId(assessmentId);
@@ -138,16 +154,22 @@ public class AddAssessmentActivity extends AppCompatActivity {
                         assessmentAdapter.notifyDataSetChanged();
                     } // end if
 
+                    Intent intent = new Intent(AddAssessmentActivity.this, MyReceiver.class);
+                    intent.putExtra("Channel", "Assessment");
+                    intent.putExtra("ID", assessment.getId().toString());
+                    intent.putExtra("Name", assessment.getAssessmentName());
+                    PendingIntent sender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, intent, 0);
+                    AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+                    alarmManager.cancel(oldSender);
+
                     if(assessmentAlert) {
                         Toast.makeText(AddAssessmentActivity.this, "You're Saving an Alert!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AddAssessmentActivity.this, MyReceiver.class);
-                        intent.putExtra("ID", assessment.getId().toString());
-                        intent.putExtra("Name", assessment.getAssessmentName());
-                        PendingIntent sender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, intent, 0);
-                        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1000, sender);
+                        // TODO set Trigger time based on end dates and goal dates.
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+10000, sender);
                     } else {
                         Toast.makeText(AddAssessmentActivity.this, "You're Disabling an Alert", Toast.LENGTH_SHORT).show();
+                        alarmManager.cancel(sender);
                     } // end if
 
                     myHelper.close();

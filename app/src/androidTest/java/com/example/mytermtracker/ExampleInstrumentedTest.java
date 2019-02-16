@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

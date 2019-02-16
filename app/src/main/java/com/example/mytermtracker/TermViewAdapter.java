@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.example.myrecylverviewapplication.MainActivity.allTerms;
+import static com.example.mytermtracker.MainActivity.allTerms;
 
 public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHolder> {
 

@@ -1,4 +1,4 @@
-package com.example.myrecylverviewapplication;
+package com.example.mytermtracker;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,35 +8,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 public class MyReceiver extends BroadcastReceiver {
 
     static int notificationID;
-    String channel_id = "test";
+    String channel_id;
     String noticeText;
     String noticeTitle;
 
-    public static final String TAG = "MyReceiver: ";
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        createNotificationChannel(context, channel_id);
 
+        channel_id = intent.getStringExtra("Channel");
         String id = intent.getStringExtra("ID");
         String name = intent.getStringExtra("Name");
 
+        createNotificationChannel(context, channel_id);
+
         notificationID = Integer.parseInt(id);
 
-        noticeText = "Assessment: " + name + " is due soon!";
-        noticeTitle = name + " Coming Due!";
-
-        Log.d(TAG, "onReceive: notificationID = " + notificationID);
-        Log.d(TAG, "onReceive: noticeText = " + noticeText);
-        Log.d(TAG, "onReceive: noticeTitle = " + noticeTitle);
+        noticeText = channel_id + ": " + name + " is soon due!";
+        noticeTitle = channel_id + " Due Date Alert!";
 
         Notification notification = new NotificationCompat.Builder(context, channel_id)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_alert)
                 .setContentText(noticeText)
                 .setContentTitle(noticeTitle)
                 .build();
@@ -47,8 +42,8 @@ public class MyReceiver extends BroadcastReceiver {
 
     private void createNotificationChannel(Context context, String channel_id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "term tracker notification channel";
-            String description = "notification channel for term tracker";
+            CharSequence name = "TermTrack notifications";
+            String description = "Notifications for Courses and Assessments.";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
             channel.setDescription(description);
