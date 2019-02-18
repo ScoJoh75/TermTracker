@@ -6,9 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,8 +47,6 @@ public class AddAssessmentActivity extends AppCompatActivity {
     boolean modifying = false;
     PendingIntent oldSender;
 
-    SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,21 +81,23 @@ public class AddAssessmentActivity extends AppCompatActivity {
 
             String goalString = (goalDate.get(Calendar.MONTH) + 1) + "/" + goalDate.get(Calendar.DAY_OF_MONTH) + "/" + goalDate.get(Calendar.YEAR);
             mDisplayGoalDate.setText(goalString);
+            goalYear = goalDate.get(Calendar.YEAR);
+            goalMonth = goalDate.get(Calendar.MONTH);
+            goalDay = goalDate.get(Calendar.DAY_OF_MONTH);
+
             mAssessmentType.setSelection(((ArrayAdapter<String>)mAssessmentType.getAdapter()).getPosition(assessment.getAssessmentType()));
 
             Intent oldIntent = new Intent(AddAssessmentActivity.this, MyReceiver.class);
             oldIntent.putExtra("Channel", "Assessment");
             oldIntent.putExtra("ID", assessment.getId().toString());
             oldIntent.putExtra("Name", assessment.getAssessmentName());
-            PendingIntent oldsender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, oldIntent, 0);
+            oldSender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, oldIntent, 0);
 
-            String assessmentIdPrefs = assessmentId.toString();
-            sharedPreferences = getSharedPreferences(assessmentIdPrefs, Context.MODE_PRIVATE);
-
-
-            // TODO determine status of existing alerts and set appropriately
-            String choice;
-            mAssessmentAlert.setChecked(true);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String queryResult = sharedPreferences.getString(assessmentId.toString(), "");
+            if(queryResult.length() > 0) {
+                mAssessmentAlert.setChecked(true);
+            } // end if
         } // end modifying if
 
         mDisplayGoalDate.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +119,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
         mGoalDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String goalDate = (month += 1) + "/" + dayOfMonth + "/" + year;
+                String goalDate = (month + 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayGoalDate.setText(goalDate);
                 goalYear = year;
                 goalMonth = month;
@@ -135,7 +137,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
                     myHelper.getWritableDatabase();
 
                     String assessmentName = mAssessmentName.getText().toString();
-                    Date goalDate = new Date(goalYear - 1900, goalMonth - 1, goalDay);
+                    Date goalDate = new Date(goalYear - 1900, goalMonth, goalDay);
                     String assessmentType = mAssessmentType.getSelectedItem().toString();
                     boolean assessmentAlert = mAssessmentAlert.isChecked();
 
@@ -148,7 +150,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
                         myHelper.updateAssessment(assessmentId, assessmentName, assessmentType, goalDate, courseId);
                         assessmentAdapter.notifyDataSetChanged();
                     } else {
-                        Assessment assessment = new Assessment(assessmentName, assessmentType, goalDate, courseId);
+                        assessment = new Assessment(assessmentName, assessmentType, goalDate, courseId);
                         assessment.setId(myHelper.addAssessment(assessment.getAssessmentName(), assessment.getAssessmentType(), assessment.getGoalDate(), assessment.getCourseId()));
                         allAssessments.add(assessment);
                         assessmentAdapter.notifyDataSetChanged();
@@ -161,15 +163,19 @@ public class AddAssessmentActivity extends AppCompatActivity {
                     PendingIntent sender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, intent, 0);
                     AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                     alarmManager.cancel(oldSender);
 
                     if(assessmentAlert) {
                         Toast.makeText(AddAssessmentActivity.this, "You're Saving an Alert!", Toast.LENGTH_LONG).show();
                         // TODO set Trigger time based on end dates and goal dates.
+                        sharedPreferences.edit().putString(assessment.getId().toString(), "true").apply();
                         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+10000, sender);
                     } else {
                         Toast.makeText(AddAssessmentActivity.this, "You're Disabling an Alert", Toast.LENGTH_SHORT).show();
                         alarmManager.cancel(sender);
+                        sharedPreferences.edit().remove(assessment.getId().toString()).apply();
                     } // end if
 
                     myHelper.close();
