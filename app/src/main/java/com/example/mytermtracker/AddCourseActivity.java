@@ -90,6 +90,14 @@ public class AddCourseActivity extends AppCompatActivity {
             String endString = (endDate.get(Calendar.MONTH) + 1) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
             mDisplayStartDate.setText(startString);
             mDisplayEndDate.setText(endString);
+
+            startYear = startDate.get(Calendar.YEAR);
+            startMonth = startDate.get(Calendar.MONTH);
+            startDay = startDate.get(Calendar.DAY_OF_MONTH);
+            endYear = endDate.get(Calendar.YEAR);
+            endMonth = endDate.get(Calendar.MONTH);
+            endDay = endDate.get(Calendar.DAY_OF_MONTH);
+
             mCourseStatus.setSelection(((ArrayAdapter<String>)mCourseStatus.getAdapter()).getPosition(course.getStatus()));
             mMentorName.setText(course.getMentorName());
             mMentorEmail.setText(course.getMentorEmail());
@@ -104,6 +112,12 @@ public class AddCourseActivity extends AppCompatActivity {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                if(modifying){
+                    year = startYear;
+                    month = startMonth;
+                    day = startDay;
+                } // end if
 
                 DatePickerDialog dialog = new DatePickerDialog(AddCourseActivity.this,
                         android.R.style.Theme_DeviceDefault_Dialog_MinWidth,
@@ -121,6 +135,12 @@ public class AddCourseActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
+                if(modifying){
+                    year = endYear;
+                    month = endMonth;
+                    day = endDay;
+                } // end if
+
                 DatePickerDialog dialog = new DatePickerDialog(AddCourseActivity.this,
                         android.R.style.Theme_DeviceDefault_Dialog_MinWidth,
                         mEndDateSetListener,
@@ -132,7 +152,7 @@ public class AddCourseActivity extends AppCompatActivity {
         mStartDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String startDate = (month += 1) + "/" + dayOfMonth + "/" + year;
+                String startDate = (month + 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayStartDate.setText(startDate);
                 startYear = year;
                 startMonth = month;
@@ -143,7 +163,7 @@ public class AddCourseActivity extends AppCompatActivity {
         mEndDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String endDate = (month += 1) + "/" + dayOfMonth + "/" + year;
+                String endDate = (month + 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayEndDate.setText(endDate);
                 endYear = year;
                 endMonth = month;
@@ -161,8 +181,8 @@ public class AddCourseActivity extends AppCompatActivity {
                     myHelper.getWritableDatabase();
 
                     String courseTitle = mEditCourseTitle.getText().toString();
-                    Date startDate = new Date(startYear - 1900, startMonth - 1, startDay);
-                    Date endDate = new Date(endYear - 1900, endMonth - 1, endDay);
+                    Date startDate = new Date(startYear - 1900, startMonth, startDay);
+                    Date endDate = new Date(endYear - 1900, endMonth, endDay);
                     String courseStatus = mCourseStatus.getSelectedItem().toString();
                     String mentorName = mMentorName.getText().toString();
                     String mentorEmail = mMentorEmail.getText().toString();

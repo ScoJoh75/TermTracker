@@ -72,9 +72,15 @@ public class AddTermActivity extends AppCompatActivity {
 
             String startString = (startDate.get(Calendar.MONTH) + 1) + "/" + startDate.get(Calendar.DAY_OF_MONTH) + "/" + startDate.get(Calendar.YEAR);
             String endString = (endDate.get(Calendar.MONTH) + 1) + "/" + endDate.get(Calendar.DAY_OF_MONTH) + "/" + endDate.get(Calendar.YEAR);
-
             mDisplayStartDate.setText(startString);
             mDisplayEndDate.setText(endString);
+
+            startYear = startDate.get(Calendar.YEAR);
+            startMonth = startDate.get(Calendar.MONTH);
+            startDay = startDate.get(Calendar.DAY_OF_MONTH);
+            endYear = endDate.get(Calendar.YEAR);
+            endMonth = endDate.get(Calendar.MONTH);
+            endDay = endDate.get(Calendar.DAY_OF_MONTH);
         }
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +90,12 @@ public class AddTermActivity extends AppCompatActivity {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                if(modifying){
+                    year = startYear;
+                    month = startMonth;
+                    day = startDay;
+                } // end if
 
                 DatePickerDialog dialog = new DatePickerDialog(AddTermActivity.this,
                         android.R.style.Theme_DeviceDefault_Dialog_MinWidth,
@@ -101,6 +113,12 @@ public class AddTermActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
+                if(modifying){
+                    year = endYear;
+                    month = endMonth;
+                    day = endDay;
+                } // end if
+
                 DatePickerDialog dialog = new DatePickerDialog(AddTermActivity.this,
                         android.R.style.Theme_DeviceDefault_Dialog_MinWidth,
                         mEndDateSetListener,
@@ -112,7 +130,7 @@ public class AddTermActivity extends AppCompatActivity {
         mStartDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String startDate = (month += 1) + "/" + dayOfMonth + "/" + year;
+                String startDate = (month + 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayStartDate.setText(startDate);
                 startYear = year;
                 startMonth = month;
@@ -123,7 +141,7 @@ public class AddTermActivity extends AppCompatActivity {
         mEndDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String endDate = (month += 1) + "/" + dayOfMonth + "/" + year;
+                String endDate = (month + 1) + "/" + dayOfMonth + "/" + year;
                 mDisplayEndDate.setText(endDate);
                 endYear = year;
                 endMonth = month;
@@ -141,8 +159,8 @@ public class AddTermActivity extends AppCompatActivity {
                     myHelper.getWritableDatabase();
 
                     String term_name = mEditTermView.getText().toString();
-                    Date start_date = new Date(startYear - 1900, startMonth - 1, startDay);
-                    Date end_date = new Date(endYear - 1900, endMonth - 1, endDay);
+                    Date start_date = new Date(startYear - 1900, startMonth, startDay);
+                    Date end_date = new Date(endYear - 1900, endMonth, endDay);
 
                     if(modifying) {
                         term.setId(id);
