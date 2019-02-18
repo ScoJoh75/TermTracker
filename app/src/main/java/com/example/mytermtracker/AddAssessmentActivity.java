@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -108,6 +107,12 @@ public class AddAssessmentActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
+                if(modifying){
+                    year = goalYear;
+                    month = goalMonth;
+                    day = goalDay;
+                } // end if
+
                 DatePickerDialog dialog = new DatePickerDialog(AddAssessmentActivity.this,
                         android.R.style.Theme_DeviceDefault_Dialog_MinWidth,
                         mGoalDateSetListener,
@@ -169,9 +174,12 @@ public class AddAssessmentActivity extends AppCompatActivity {
 
                     if(assessmentAlert) {
                         Toast.makeText(AddAssessmentActivity.this, "You're Saving an Alert!", Toast.LENGTH_LONG).show();
-                        // TODO set Trigger time based on end dates and goal dates.
+                        Calendar alarmDate = Calendar.getInstance();
+                        alarmDate.setTime(goalDate);
+                        long alarmMillis = alarmDate.getTimeInMillis();
+
                         sharedPreferences.edit().putString(assessment.getId().toString(), "true").apply();
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+10000, sender);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmMillis, sender);
                     } else {
                         Toast.makeText(AddAssessmentActivity.this, "You're Disabling an Alert", Toast.LENGTH_SHORT).show();
                         alarmManager.cancel(sender);

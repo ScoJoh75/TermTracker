@@ -27,7 +27,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         notificationID = Integer.parseInt(id);
 
-        noticeText = channel_id + ": " + name + " is soon due!";
+        noticeText = channel_id + ": " + name + " is soon today!";
         noticeTitle = channel_id + " Due Date Alert!";
 
         Notification notification = new NotificationCompat.Builder(context, channel_id)
