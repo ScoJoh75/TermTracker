@@ -93,7 +93,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
             oldSender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, oldIntent, 0);
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String queryResult = sharedPreferences.getString(assessmentId.toString(), "");
+            String queryResult = sharedPreferences.getString("Assessment " + assessmentId.toString(), "");
             if(queryResult.length() > 0) {
                 mAssessmentAlert.setChecked(true);
             } // end if
@@ -165,12 +165,16 @@ public class AddAssessmentActivity extends AppCompatActivity {
                     intent.putExtra("Channel", "Assessment");
                     intent.putExtra("ID", assessment.getId().toString());
                     intent.putExtra("Name", assessment.getAssessmentName());
+                    intent.putExtra("Message", " is due today!");
                     PendingIntent sender = PendingIntent.getBroadcast(AddAssessmentActivity.this, 0, intent, 0);
                     AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String queryResult = sharedPreferences.getString("Assessment " + assessment.getId().toString(), "");
 
-                    alarmManager.cancel(oldSender);
+                    if(queryResult.length() > 0) {
+                        alarmManager.cancel(oldSender);
+                    } // end if
 
                     if(assessmentAlert) {
                         Toast.makeText(AddAssessmentActivity.this, "You're Saving an Alert!", Toast.LENGTH_LONG).show();
@@ -178,12 +182,12 @@ public class AddAssessmentActivity extends AppCompatActivity {
                         alarmDate.setTime(goalDate);
                         long alarmMillis = alarmDate.getTimeInMillis();
 
-                        sharedPreferences.edit().putString(assessment.getId().toString(), "true").apply();
+                        sharedPreferences.edit().putString("Assessment " + assessment.getId().toString(), "true").apply();
                         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmMillis, sender);
                     } else {
                         Toast.makeText(AddAssessmentActivity.this, "You're Disabling an Alert", Toast.LENGTH_SHORT).show();
                         alarmManager.cancel(sender);
-                        sharedPreferences.edit().remove(assessment.getId().toString()).apply();
+                        sharedPreferences.edit().remove("Assessment " + assessment.getId().toString()).apply();
                     } // end if
 
                     myHelper.close();

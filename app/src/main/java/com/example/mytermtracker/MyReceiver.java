@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class MyReceiver extends BroadcastReceiver {
 
@@ -15,6 +16,7 @@ public class MyReceiver extends BroadcastReceiver {
     String channel_id;
     String noticeText;
     String noticeTitle;
+    String message;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -22,13 +24,15 @@ public class MyReceiver extends BroadcastReceiver {
         channel_id = intent.getStringExtra("Channel");
         String id = intent.getStringExtra("ID");
         String name = intent.getStringExtra("Name");
+        message = intent.getStringExtra("Message");
 
         createNotificationChannel(context, channel_id);
 
         notificationID = Integer.parseInt(id);
 
-        noticeText = channel_id + ": " + name + " is soon today!";
-        noticeTitle = channel_id + " Due Date Alert!";
+        noticeTitle = channel_id + " Alert!";
+
+        noticeText = name + message;
 
         Notification notification = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_alert)

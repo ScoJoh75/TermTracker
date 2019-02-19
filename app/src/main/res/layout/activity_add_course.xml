@@ -11,7 +11,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context=".AddCourseActivity">
 
         <TextView
@@ -89,7 +89,7 @@
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="5dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
@@ -144,7 +144,7 @@
         <View
             android:id="@+id/divider2"
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="5dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
@@ -169,27 +169,45 @@
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:ems="10"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:singleLine="false"
-            app:layout_constraintBottom_toTopOf="@+id/course_cancel_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/course_notes_header"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/course_notes_header" />
+
+        <TextView
+            android:id="@+id/course_alert_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Receive Alerts for this Course?"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/course_notes" />
+
+        <Switch
+            android:id="@+id/course_notification_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Switch"
+            app:layout_constraintStart_toStartOf="@+id/course_alert_header"
+            app:layout_constraintTop_toBottomOf="@+id/course_alert_header" />
 
         <Button
             android:id="@+id/course_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:text="Cancel New Course"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/course_notification_switch" />
 
         <Button
             android:id="@+id/course_add_button"
