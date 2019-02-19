@@ -30,7 +30,6 @@ import static com.example.mytermtracker.TermDetailActivity.courseAdapter;
 
 public class AddCourseActivity extends AppCompatActivity {
 
-    private TextView mActivityTitle;
     private EditText mEditCourseTitle;
     private TextView mDisplayStartDate;
     private DatePickerDialog.OnDateSetListener mStartDateSetListener;
@@ -64,7 +63,7 @@ public class AddCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
 
-        mActivityTitle = findViewById(R.id.activity_title);
+        TextView mActivityTitle = findViewById(R.id.activity_title);
         mEditCourseTitle = findViewById(R.id.course_title);
         mDisplayStartDate = findViewById(R.id.course_start_date);
         mDisplayEndDate = findViewById(R.id.course_end_date);
@@ -247,14 +246,14 @@ public class AddCourseActivity extends AppCompatActivity {
                     startIntent.putExtra("ID", course.getId().toString());
                     startIntent.putExtra("Name", course.getCourseTitle());
                     startIntent.putExtra("Message", " begins today!");
-                    PendingIntent startSender = PendingIntent.getBroadcast(AddCourseActivity.this, 0, startIntent, 0);
+                    PendingIntent startSender = PendingIntent.getBroadcast(AddCourseActivity.this, 0, startIntent, PendingIntent.FLAG_ONE_SHOT);
 
                     Intent endIntent = new Intent(AddCourseActivity.this, MyReceiver.class);
                     endIntent.putExtra("Channel", "Course Ends");
                     endIntent.putExtra("ID", Long.toString(course.getId() + 10000));
                     endIntent.putExtra("Name", course.getCourseTitle());
                     endIntent.putExtra("Message", " ends today!");
-                    PendingIntent endSender = PendingIntent.getBroadcast(AddCourseActivity.this, 0, endIntent, 0);
+                    PendingIntent endSender = PendingIntent.getBroadcast(AddCourseActivity.this, 1, endIntent, PendingIntent.FLAG_ONE_SHOT);
 
                     AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
