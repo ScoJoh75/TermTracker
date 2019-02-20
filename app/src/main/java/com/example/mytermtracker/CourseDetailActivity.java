@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import static com.example.mytermtracker.MainActivity.allAssessments;
 
@@ -61,8 +60,11 @@ public class CourseDetailActivity extends AppCompatActivity implements Assessmen
         ImageButton shareNotes = findViewById(R.id.share_notes);
         shareNotes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO Share them notes!
-                Toast.makeText(CourseDetailActivity.this, "You're trying to share!!!", Toast.LENGTH_SHORT).show();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, course.getNotes());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
 
