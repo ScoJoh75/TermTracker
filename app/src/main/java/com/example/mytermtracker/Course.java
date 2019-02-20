@@ -63,77 +63,73 @@ public class Course implements Parcelable {
         this.id = id;
     } // end setId
 
-    public String getCourseTitle() {
+    String getCourseTitle() {
         return courseTitle;
     } // end getCourseTitle
 
-    public void setCourseTitle(String courseTitle) {
+    void setCourseTitle(String courseTitle) {
         this.courseTitle = courseTitle;
     } // end setCourseTitle
 
-    public Date getStartDate() {
+    Date getStartDate() {
         return startDate;
     } // end getStartDate
 
-    public void setStartDate(Date startDate) {
+    void setStartDate(Date startDate) {
         this.startDate = startDate;
     } // end setStartDate
 
-    public Date getEndDate() {
+    Date getEndDate() {
         return endDate;
     } // end getEndDate
 
-    public void setEndDate(Date endDate) {
+    void setEndDate(Date endDate) {
         this.endDate = endDate;
     } // end setEndDate
 
-    public String getStatus() {
+    String getStatus() {
         return status;
     } // end getStatus
 
-    public void setStatus(String status) {
+    void setStatus(String status) {
         this.status = status;
     } // end setStatus
 
-    public String getMentorName() {
+    String getMentorName() {
         return mentorName;
     } // end getMentorName
 
-    public void setMentorName(String mentorName) {
+    void setMentorName(String mentorName) {
         this.mentorName = mentorName;
     } // end setMentorName
 
-    public String getMentorPhone() {
+    String getMentorPhone() {
         return mentorPhone;
     } // end getMentorPhone
 
-    public void setMentorPhone(String mentorPhone) {
+    void setMentorPhone(String mentorPhone) {
         this.mentorPhone = mentorPhone;
     } // end setMentorPhone
 
-    public String getMentorEmail() {
+    String getMentorEmail() {
         return mentorEmail;
     } // end getMentorEmail
 
-    public void setMentorEmail(String mentorEmail) {
+    void setMentorEmail(String mentorEmail) {
         this.mentorEmail = mentorEmail;
     } // end setMentorEmail
 
-    public String getNotes() {
+    String getNotes() {
         return notes;
     } // end getNotes
 
-    public void setNotes(String notes) {
+    void setNotes(String notes) {
         this.notes = notes;
     } // end setNotes
 
-    public Long getTermId() {
+    Long getTermId() {
         return termId;
     } // end getTermId
-
-    public void setTermId(Long termId) {
-        this.termId = termId;
-    } // end setTermId
 
     private Course(Parcel in) {
         this.id = in.readLong();

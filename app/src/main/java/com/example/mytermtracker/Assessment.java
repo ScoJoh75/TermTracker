@@ -23,7 +23,7 @@ public class Assessment implements Parcelable {
     private Date goalDate;
     private Long courseId;
 
-    public Assessment(Long id, String assessmentName, String assessmentType, Date goalDate, Long courseId) {
+    Assessment(Long id, String assessmentName, String assessmentType, Date goalDate, Long courseId) {
         this.id = id;
         this.assessmentName = assessmentName;
         this.assessmentType = assessmentType;
@@ -31,7 +31,7 @@ public class Assessment implements Parcelable {
         this.courseId = courseId;
     } // end Full Constructor
 
-    public Assessment(String assessmentName, String assessmentType, Date goalDate, Long courseId) {
+    Assessment(String assessmentName, String assessmentType, Date goalDate, Long courseId) {
         this.assessmentName = assessmentName;
         this.assessmentType = assessmentType;
         this.goalDate = goalDate;
@@ -46,37 +46,33 @@ public class Assessment implements Parcelable {
         this.id = id;
     } // end setId
 
-    public String getAssessmentName() {
+    String getAssessmentName() {
         return assessmentName;
     } // end getAssessmentName
 
-    public void setAssessmentName(String assessmentName) {
+    void setAssessmentName(String assessmentName) {
         this.assessmentName = assessmentName;
     } // end setAssessmentName
 
-    public String getAssessmentType() {
+    String getAssessmentType() {
         return assessmentType;
     } // end getAssessmentType
 
-    public void setAssessmentType(String assessmentType) {
+    void setAssessmentType(String assessmentType) {
         this.assessmentType = assessmentType;
     } // end setAssessmentType
 
-    public Date getGoalDate() {
+    Date getGoalDate() {
         return goalDate;
     } // end getGoalDate
 
-    public void setGoalDate(Date goalDate) {
+    void setGoalDate(Date goalDate) {
         this.goalDate = goalDate;
     } // end setGoalDate
 
-    public Long getCourseId() {
+    Long getCourseId() {
         return courseId;
     } // end getCourseId
-
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
-    } // end setCourseId
 
     private Assessment(Parcel in) {
         this.id = in.readLong();

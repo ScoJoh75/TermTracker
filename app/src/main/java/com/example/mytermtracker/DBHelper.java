@@ -181,6 +181,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 allTerms.add(term);
             } // end while
         } // end if
+        assert cursor != null;
         cursor.close();
         db.close();
         return allTerms;
@@ -209,6 +210,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 allCourses.add(course);
             } // end while
         } // end if
+        assert cursor != null;
         cursor.close();
         db.close();
         return allCourses;
@@ -231,6 +233,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 allAssessments.add(assessment);
             } // end while
         } // end if
+        assert cursor != null;
         cursor.close();
         db.close();
         return allAssessments;

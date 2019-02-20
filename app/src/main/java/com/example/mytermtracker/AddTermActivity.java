@@ -20,7 +20,6 @@ import static com.example.mytermtracker.MainActivity.termAdapter;
 
 public class AddTermActivity extends AppCompatActivity {
 
-    private TextView mActivityTitle;
     private EditText mEditTermView;
     private TextView mDisplayStartDate;
     private DatePickerDialog.OnDateSetListener mStartDateSetListener;
@@ -45,7 +44,7 @@ public class AddTermActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_term);
 
-        mActivityTitle = findViewById(R.id.termInfoTitle);
+        TextView mActivityTitle = findViewById(R.id.termInfoTitle);
         mEditTermView = findViewById(R.id.edit_term_name);
         mDisplayStartDate = findViewById(R.id.edit_start_date);
         mDisplayEndDate = findViewById(R.id.edit_end_date);
@@ -61,8 +60,8 @@ public class AddTermActivity extends AppCompatActivity {
             listposition = intent.getIntExtra("listposition", -1);
 
             mActivityTitle.setText(getString(R.string.add_modify_title));
-            insertButton.setText("Update Term");
-            cancelButton.setText("Cancel Update");
+            insertButton.setText(getString(R.string.update_term));
+            cancelButton.setText(getString(R.string.cancel_update));
             mEditTermView.setText(term.getTermName());
 
             Calendar startDate = Calendar.getInstance();

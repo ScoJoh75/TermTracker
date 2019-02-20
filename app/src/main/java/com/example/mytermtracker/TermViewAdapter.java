@@ -2,6 +2,7 @@ package com.example.mytermtracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,15 +27,16 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.ViewHo
     }
 
     // inflates the row layout from xml when needed
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.term_view_row, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Term term = mData.get(position);
         holder.termNameView.setText(term.getTermName());
         holder.termStartDate.setText(term.getStartDate().toString());

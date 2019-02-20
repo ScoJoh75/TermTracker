@@ -17,6 +17,8 @@
     </string-array>
 
     <string name="type_prompt">Select Assessment Type</string>
+    <string name="update_term">Update Term</string>
+    <string name="cancel_update">Cancel Update</string>
     <string-array name="assessment_type">
         <item>Performance</item>
         <item>Objective</item>
