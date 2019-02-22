@@ -15,9 +15,15 @@
             android:exported="true"></receiver>
 
         <activity android:name="com.example.mytermtracker.AddAssessmentActivity" />
-        <activity android:name="com.example.mytermtracker.CourseDetailActivity" />
+        <activity
+            android:name="com.example.mytermtracker.CourseDetailActivity"
+            android:parentActivityName=".TermDetailActivity"
+            android:launchMode="singleTop"/>
         <activity android:name="com.example.mytermtracker.AddCourseActivity" />
-        <activity android:name="com.example.mytermtracker.TermDetailActivity" />
+        <activity
+            android:name="com.example.mytermtracker.TermDetailActivity"
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop"/>
         <activity android:name="com.example.mytermtracker.AddTermActivity" />
         <activity android:name="com.example.mytermtracker.MainActivity">
             <intent-filter>

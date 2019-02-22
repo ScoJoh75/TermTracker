@@ -92,7 +92,7 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
     public void onCourseClick(View view, int position) {
         Intent intent = new Intent(this, CourseDetailActivity.class);
         intent.putExtra("FullCourse", courseAdapter.getItem(position));
-        this.startActivity(intent);
+        startActivity(intent);
     } // end onCourseClick
 
     private void launchAddCourse() {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_term_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddTermActivity">
@@ -15,15 +16,6 @@
         android:layout_marginTop="20dp"
         android:text="Enter New Term Information"
         android:textSize="24sp" />
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginTop="65dp"-->
-    <!--android:layout_marginBottom="0dp"-->
-    <!--android:orientation="vertical">-->
 
     <EditText
         android:id="@+id/edit_term_name"
@@ -77,8 +69,6 @@
         android:hint="Click to select End Date"
         android:textSize="25sp" />
 
-    <!--</LinearLayout>-->
-
     <Button
         android:id="@+id/cancelInsertButton"
         android:layout_width="wrap_content"
@@ -89,16 +79,5 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Cancel New Term" />
-
-    <Button
-        android:id="@+id/termInsertButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_end_date"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="false"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/add_term" />
 
 </RelativeLayout>

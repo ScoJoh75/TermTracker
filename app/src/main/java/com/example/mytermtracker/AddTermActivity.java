@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +50,18 @@ public class AddTermActivity extends AppCompatActivity {
         mEditTermView = findViewById(R.id.edit_term_name);
         mDisplayStartDate = findViewById(R.id.edit_start_date);
         mDisplayEndDate = findViewById(R.id.edit_end_date);
-        final Button insertButton = findViewById(R.id.termInsertButton);
-        final Button cancelButton = findViewById(R.id.cancelInsertButton);
+        Button cancelButton = findViewById(R.id.cancelInsertButton);
+
+        // This section adds a button programmatically rather than via XML
+        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        buttonParams.setMargins(0,710,16,0);
+        Button insertButton = new Button(this);
+        insertButton.setText("Add New Term");
+        insertButton.setLayoutParams(buttonParams);
+        RelativeLayout relativeLayout = findViewById(R.id.new_term_layout);
+        relativeLayout.addView(insertButton);
 
         Intent intent = getIntent();
 
