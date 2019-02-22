@@ -158,9 +158,9 @@
             android:layout_marginEnd="8dp"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_assessment_button" />
+            app:layout_constraintTop_toBottomOf="@+id/assessment_text_information" />
 
         <ImageButton
             android:id="@+id/share_notes"
@@ -176,8 +176,19 @@
             android:id="@+id/add_assessment_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Add Assessment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/assessment_text_information"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Tap ADD ASSESSMENT above to begin adding the assessments you wish to track for this Course.\nOr tap the Trashcan icon to delete this Course."
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/course_notes" />
     </android.support.constraint.ConstraintLayout>

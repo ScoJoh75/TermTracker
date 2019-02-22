@@ -19,6 +19,10 @@
     <string name="type_prompt">Select Assessment Type</string>
     <string name="update_term">Update Term</string>
     <string name="cancel_update">Cancel Update</string>
+    <string name="action">Add Term</string>
+    <string name="click_term_text">Tap on a Term below to add courses to that Term.\nOr tap the pencil icon next to a Term to edit its information.</string>
+    <string name="click_course_text">Tap on a Course below to view that Courses details and to add assessments.\nOr tap the pencil icon next to a Course to edit its information.</string>
+    <string name="click_assessment_text">Tap on an Assessment below to edit that Assessments details.\nOr tap the Trashcan icon to delete the Assessment.</string>
     <string-array name="assessment_type">
         <item>Performance</item>
         <item>Objective</item>

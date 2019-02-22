@@ -1,14 +1,18 @@
 package com.example.mytermtracker;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static com.example.mytermtracker.MainActivity.allAssessments;
 
@@ -18,11 +22,16 @@ public class CourseDetailActivity extends AppCompatActivity implements Assessmen
     static AssessmentViewAdapter assessmentAdapter;
 
     Course course;
+    TextView mainText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        invalidateOptionsMenu();
 
         myHelper = new DBHelper(CourseDetailActivity.this);
         myHelper.getWritableDatabase();
@@ -51,9 +60,13 @@ public class CourseDetailActivity extends AppCompatActivity implements Assessmen
         ImageButton deleteCourse = findViewById(R.id.delete_course_button);
         deleteCourse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                if (allAssessments.size() == 0) {
                     myHelper.deleteCourse(course.getId());
                     myHelper.close();
                     finish();
+                } else {
+                    Toast.makeText(CourseDetailActivity.this, "This Course still has assessments. Please delete all assessments before deleting a Course!", Toast.LENGTH_LONG).show();
+                } // end if
             } // end onClick
         });
 
@@ -75,6 +88,7 @@ public class CourseDetailActivity extends AppCompatActivity implements Assessmen
                 launchAddAssessment();
             }
         });
+        addAssessment.setVisibility(View.INVISIBLE);
 
         allAssessments = myHelper.getAllAssessments(course.getId());
 
@@ -84,6 +98,11 @@ public class CourseDetailActivity extends AppCompatActivity implements Assessmen
         assessmentAdapter = new AssessmentViewAdapter(this, allAssessments);
         assessmentAdapter.setClickListener(this);
         recyclerView.setAdapter(assessmentAdapter);
+
+        if(assessmentAdapter.getItemCount() > 0) {
+            mainText = findViewById(R.id.assessment_text_information);
+            mainText.setText(getString(R.string.click_assessment_text));
+        } // end if
     } // end onCreate
 
     @Override
@@ -100,4 +119,26 @@ public class CourseDetailActivity extends AppCompatActivity implements Assessmen
         intent.putExtra("courseid", course.getId());
         startActivity(intent);
     } // end launchAddAssessment
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    } // end onCreateOptionsMenu
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action:
+            {launchAddAssessment();}
+        } // end switch
+        return super.onOptionsItemSelected(item);
+    } // end onOptionsItemSelected
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem title = menu.findItem(R.id.action);
+        title.setTitle("ADD ASSESSMENT");
+        return true;
+    } // end onPrepareOptionsMenu
 } // end CourseDetailActivity

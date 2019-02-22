@@ -1,10 +1,13 @@
 package com.example.mytermtracker;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,11 +22,16 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
     static CourseViewAdapter courseAdapter;
 
     long termId;
+    TextView mainText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_detail);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        invalidateOptionsMenu();
 
         myHelper = new DBHelper(TermDetailActivity.this);
         myHelper.getWritableDatabase();
@@ -46,13 +54,14 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
                     Toast.makeText(TermDetailActivity.this, "This Term still has courses. Please delete courses before deleting a Term!", Toast.LENGTH_LONG).show();
                 } // end if
             } // end onClick
-        });
+        }); // end setOnClickListener
 
-        Button btnLaunchAddTerm = findViewById(R.id.courseAddButton);
-        btnLaunchAddTerm.setOnClickListener(new View.OnClickListener() {
+        Button btnLaunchAddCourse = findViewById(R.id.courseAddButton);
+        btnLaunchAddCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {launchAddCourse();}
         });
+        btnLaunchAddCourse.setVisibility(View.INVISIBLE);
 
         allCourses = myHelper.getAllCourses(termId);
         //myHelper.close();
@@ -63,18 +72,54 @@ public class TermDetailActivity extends AppCompatActivity implements CourseViewA
         courseAdapter = new CourseViewAdapter(this, allCourses);
         courseAdapter.setClickListener(this);
         recyclerView.setAdapter(courseAdapter);
-    }
+
+        if(courseAdapter.getItemCount() > 0) {
+            mainText = findViewById(R.id.course_text_information);
+            mainText.setText(getString(R.string.click_course_text));
+        } // end if
+    } // end onCreate
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(courseAdapter.getItemCount() > 0) {
+            mainText = findViewById(R.id.course_text_information);
+            mainText.setText(getString(R.string.click_course_text));
+        } // end if
+    } // end onResume
 
     @Override
     public void onCourseClick(View view, int position) {
         Intent intent = new Intent(this, CourseDetailActivity.class);
         intent.putExtra("FullCourse", courseAdapter.getItem(position));
         this.startActivity(intent);
-    }
+    } // end onCourseClick
 
     private void launchAddCourse() {
         Intent intent = new Intent(this, AddCourseActivity.class);
         intent.putExtra("termid", termId);
         startActivity(intent);
-    }
-}
+    } // end launchAddCourse
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    } // end onCreateOptionsMenu
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action:
+            {launchAddCourse();}
+        } // end switch
+        return super.onOptionsItemSelected(item);
+    } // end onOptionsItemSelected
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem title = menu.findItem(R.id.action);
+        title.setTitle("ADD COURSE");
+        return true;
+    } // end onPrepareOptionsMenu
+} // end TermDetailActivity
