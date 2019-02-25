@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -53,15 +52,20 @@ public class AddTermActivity extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.cancelInsertButton);
 
         // This section adds a button programmatically rather than via XML
+        RelativeLayout relativeLayout = findViewById(R.id.new_term_layout);
         RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        buttonParams.setMargins(0,710,16,0);
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         Button insertButton = new Button(this);
         insertButton.setText("Add New Term");
+        int buttonID = 1964;
+        insertButton.setId(buttonID);
+        relativeLayout.addView(insertButton, buttonParams);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) insertButton.getLayoutParams();
+        params.addRule(RelativeLayout.ALIGN_TOP, cancelButton.getId());
+        params.addRule(RelativeLayout.RIGHT_OF, cancelButton.getId());
+
+        buttonParams.setMargins(256,0,16,0);
         insertButton.setLayoutParams(buttonParams);
-        RelativeLayout relativeLayout = findViewById(R.id.new_term_layout);
-        relativeLayout.addView(insertButton);
 
         Intent intent = getIntent();
 
